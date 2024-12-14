@@ -1,6 +1,6 @@
 package service;
 
-import model.SensorEvent;
+import model.sensor.SensorEvent;
 import org.apache.avro.specific.SpecificRecordBase;
 
 public abstract class BaseSensorEventHandler<T extends SpecificRecordBase> implements SensorEventHandler {

@@ -1,4 +1,4 @@
-package model;
+package model.sensor;
 
 public enum SensorEventType {
     MOTION_SENSOR_EVENT,

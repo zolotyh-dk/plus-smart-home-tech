@@ -1,7 +1,7 @@
 package service;
 
-import model.SensorEvent;
-import model.SensorEventType;
+import model.sensor.SensorEvent;
+import model.sensor.SensorEventType;
 
 public interface SensorEventHandler {
     SensorEventType getMessageType();
