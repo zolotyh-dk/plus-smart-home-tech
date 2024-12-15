@@ -13,8 +13,8 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class MotionSensorEvent extends SensorEvent {
     private int linkQuality; // Качество связи
-    private boolean motion; // Наличие/отсутствие движения
-    private int voltage; // Напряжение
+    private boolean motion;  // Наличие/отсутствие движения
+    private int voltage;     // Напряжение
 
     @Override
     public SensorEventType getType() {

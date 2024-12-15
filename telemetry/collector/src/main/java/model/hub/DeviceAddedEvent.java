@@ -12,7 +12,7 @@ import lombok.ToString;
 @Setter
 @ToString(callSuper = true)
 public class DeviceAddedEvent extends HubEvent {
-    private String id; // Идентификатор добавленного устройства
+    private String id;              // Идентификатор добавленного устройства
     private DeviceType deviceType; // Тип устройства
 
     @Override

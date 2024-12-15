@@ -1,4 +1,4 @@
-package service;
+package service.handler.sensor;
 
 import model.sensor.SensorEvent;
 import model.sensor.SensorEventType;
