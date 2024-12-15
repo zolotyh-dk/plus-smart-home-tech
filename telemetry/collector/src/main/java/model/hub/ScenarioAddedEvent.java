@@ -14,7 +14,6 @@ import java.util.List;
 @Setter
 @ToString(callSuper = true)
 public class ScenarioAddedEvent extends HubEvent{
-
     private String name;                        // Название добавленного сценария. Должно содержать не менее 3 символов
     private List<ScenarioCondition> conditions; // Список условий, которые связаны со сценарием. Не может быть пустым
     private List<DeviceAction> actions;         // Список действий, которые должны быть выполнены в рамках сценария. Не может быть пустым
