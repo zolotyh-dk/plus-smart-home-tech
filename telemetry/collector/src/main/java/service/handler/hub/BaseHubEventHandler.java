@@ -1,14 +1,19 @@
 package service.handler.hub;
 
 import model.hub.HubEvent;
-import model.sensor.SensorEvent;
 import org.apache.avro.specific.SpecificRecordBase;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import ru.yandex.practicum.kafka.telemetry.event.HubEventAvro;
-import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;
-import service.handler.sensor.SensorEventHandler;
+import configuration.KafkaConfiguration;
 
 public abstract class BaseHubEventHandler<T extends SpecificRecordBase> implements HubEventHandler {
-//    protected KafkaEventProducer producer;
+    @Autowired
+    protected KafkaProducer<String, SpecificRecordBase> producer;
+
+    @Value("${kafka-topic-hub}")
+    protected String topic;
 
     protected abstract T mapToAvro(HubEvent event);
 
@@ -25,6 +30,6 @@ public abstract class BaseHubEventHandler<T extends SpecificRecordBase> implemen
                 .setPayload(payload)
                 .build();
 
-//        producer.send(hubEventAvro, event.getHubId(), event.getTimestamp(), HUB_EVENTS);
+        producer.send(hubEventAvro, event.getHubId(), event.getTimestamp(), topic);
     }
 }
