@@ -1,13 +1,19 @@
 package ru.yandex.practicum.service.handler.sensor;
 
-import org.springframework.stereotype.Service;
+import org.apache.avro.specific.SpecificRecordBase;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.springframework.stereotype.Component;
+import ru.yandex.practicum.kafka.telemetry.event.MotionSensorAvro;
 import ru.yandex.practicum.model.sensor.MotionSensorEvent;
 import ru.yandex.practicum.model.sensor.SensorEvent;
 import ru.yandex.practicum.model.sensor.SensorEventType;
-import ru.yandex.practicum.kafka.telemetry.event.MotionSensorAvro;
 
-@Service
+@Component
 public class MotionSensorEventHandler extends BaseSensorEventHandler<MotionSensorAvro> {
+    protected MotionSensorEventHandler(KafkaProducer<String, SpecificRecordBase> producer) {
+        super(producer);
+    }
+
     @Override
     protected MotionSensorAvro mapToAvro(SensorEvent event) {
         MotionSensorEvent motionSensorEvent = (MotionSensorEvent) event;

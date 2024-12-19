@@ -1,23 +1,25 @@
 package ru.yandex.practicum.service.handler.hub;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import ru.yandex.practicum.model.hub.HubEvent;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import ru.yandex.practicum.kafka.telemetry.event.HubEventAvro;
+import ru.yandex.practicum.model.hub.HubEvent;
 
 @Slf4j
-@Service
 public abstract class BaseHubEventHandler<T extends SpecificRecordBase> implements HubEventHandler {
-    @Autowired
-    protected KafkaProducer<String, SpecificRecordBase> producer;
+    protected final KafkaProducer<String, SpecificRecordBase> producer;
 
     @Value("${kafka.topic.hub}")
     protected String topic;
+
+    @Autowired
+    public BaseHubEventHandler(KafkaProducer<String, SpecificRecordBase> producer) {
+        this.producer = producer;
+    }
 
     protected abstract T mapToAvro(HubEvent event);
 

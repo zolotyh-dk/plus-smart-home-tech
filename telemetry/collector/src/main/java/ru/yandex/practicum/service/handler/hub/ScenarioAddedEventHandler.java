@@ -1,11 +1,17 @@
 package ru.yandex.practicum.service.handler.hub;
 
-import org.springframework.stereotype.Service;
-import ru.yandex.practicum.model.hub.*;
+import org.apache.avro.specific.SpecificRecordBase;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.springframework.stereotype.Component;
 import ru.yandex.practicum.kafka.telemetry.event.*;
+import ru.yandex.practicum.model.hub.*;
 
-@Service
+@Component
 public class ScenarioAddedEventHandler extends BaseHubEventHandler<ScenarioAddedAvro> {
+    public ScenarioAddedEventHandler(KafkaProducer<String, SpecificRecordBase> producer) {
+        super(producer);
+    }
+
     @Override
     protected ScenarioAddedAvro mapToAvro(HubEvent event) {
         ScenarioAddedEvent scenarioAddedEvent = (ScenarioAddedEvent) event;

@@ -6,18 +6,20 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;
 import ru.yandex.practicum.model.sensor.SensorEvent;
 
 @Slf4j
-@Service
 public abstract class BaseSensorEventHandler<T extends SpecificRecordBase> implements SensorEventHandler {
-    @Autowired
-    protected KafkaProducer<String, SpecificRecordBase> producer;
+    protected final KafkaProducer<String, SpecificRecordBase> producer;
 
     @Value("${kafka.topic.sensor}")
     protected String topic;
+
+    @Autowired
+    protected BaseSensorEventHandler(KafkaProducer<String, SpecificRecordBase> producer) {
+        this.producer = producer;
+    }
 
     protected abstract T mapToAvro(SensorEvent event);
 
