@@ -47,7 +47,7 @@
                     <protocVersion>${protobuf.version}</protocVersion>
                     <!-- Путь к папке с proto-файлами -->
                     <sourceDirectories>
-                        <sourceDirectory>${project.basedir}/src/main/protobuf/telemetry</sourceDirectory>
+                        <sourceDirectory>${project.basedir}/src/main/protobuf</sourceDirectory>
                     </sourceDirectories>
                     <!-- Путь, куда будут сгенерированы файлы -->
                     <outputDirectory>${project.build.directory}/generated-sources/protobuf</outputDirectory>
