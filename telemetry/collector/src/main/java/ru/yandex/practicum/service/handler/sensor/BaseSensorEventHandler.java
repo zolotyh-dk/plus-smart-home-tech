@@ -36,7 +36,9 @@ public abstract class BaseSensorEventHandler<T extends SpecificRecordBase> imple
         SensorEventAvro sensorEventAvro = SensorEventAvro.newBuilder()
                 .setHubId(event.getHubId())
                 .setId(event.getId())
-                .setTimestamp(Instant.ofEpochSecond(event.getTimestamp().getSeconds(), event.getTimestamp().getNanos()))
+                .setTimestamp(Instant.ofEpochSecond(
+                        event.getTimestamp().getSeconds(),
+                        event.getTimestamp().getNanos()))
                 .setPayload(payload)
                 .build();
 

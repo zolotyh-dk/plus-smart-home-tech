@@ -19,12 +19,11 @@ message HubEventProto {
 }
 
 enum DeviceTypeProto {
-  // Варианты значений enum DeviceTypeProto
-  MOTION_SENSOR = 0;      // датчик движения
-  TEMPERATURE_SENSOR = 1; // датчик температуры
-  LIGHT_SENSOR = 2;       // датчик освещённости
-  CLIMATE_SENSOR = 3;     // датчик контроля климата
-  SWITCH_SENSOR = 4;      // переключатель
+  MOTION_SENSOR = 0;
+  TEMPERATURE_SENSOR = 1;
+  LIGHT_SENSOR = 2;
+  CLIMATE_SENSOR = 3;
+  SWITCH_SENSOR = 4;
 }
 
 message DeviceAddedEventProto {
@@ -75,11 +74,11 @@ message DeviceActionProto {
 }
 
 message ScenarioAddedEventProto {
-  string id = 1;
+  string name = 1;
   repeated ScenarioConditionProto condition = 2;
   repeated DeviceActionProto action = 3;
 }
 
 message ScenarioRemovedEventProto {
-  string id = 1;
+  string name = 1;
 }
