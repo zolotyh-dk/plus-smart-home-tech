@@ -3,13 +3,13 @@ package ru.yandex.practicum;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
-import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.context.ConfigurableApplicationContext;
 
 @SpringBootApplication
-@EnableScheduling
-@ConfigurationPropertiesScan
-public class DataGenerator {
+public class Aggregator {
     public static void main(String[] args) {
-        SpringApplication.run(DataGenerator.class, args);
+        ConfigurableApplicationContext context = SpringApplication.run(Aggregator.class, args);
+        AggregationStarter aggregator = context.getBean(AggregationStarter.class);
+        aggregator.start();
     }
 }
