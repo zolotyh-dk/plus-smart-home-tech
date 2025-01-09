@@ -1,6 +1,6 @@
 @namespace("ru.yandex.practicum.kafka.telemetry.event")
 protocol SensorEventProtocol {
-	record ClimatSensorAvro {
+	record ClimateSensorAvro {
 		int temperatureC;
 		int humidity;
 		int co2Level;
@@ -31,7 +31,7 @@ protocol SensorEventProtocol {
 		string hubId;
 		timestamp_ms timestamp;
 		union {
-			ClimatSensorAvro,
+			ClimateSensorAvro,
 			LightSensorAvro,
 			MotionSensorAvro,
 			SwitchSensorAvro,
