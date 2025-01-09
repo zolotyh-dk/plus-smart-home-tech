@@ -6,8 +6,10 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import ru.yandex.practicum.grpc.telemetry.event.SensorEventProto;
 import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;
-import ru.yandex.practicum.model.sensor.SensorEvent;
+
+import java.time.Instant;
 
 @Slf4j
 public abstract class BaseSensorEventHandler<T extends SpecificRecordBase> implements SensorEventHandler {
@@ -21,12 +23,12 @@ public abstract class BaseSensorEventHandler<T extends SpecificRecordBase> imple
         this.producer = producer;
     }
 
-    protected abstract T mapToAvro(SensorEvent event);
+    protected abstract T mapToAvro(SensorEventProto event);
 
     @Override
-    public void handle(SensorEvent event) {
-        if (!event.getType().equals(getMessageType())) {
-            throw new IllegalArgumentException("Неизвестный тип события: " + event.getType());
+    public void handle(SensorEventProto event) {
+        if (!event.getPayloadCase().equals(getMessageType())) {
+            throw new IllegalArgumentException("Неизвестный тип события: " + event.getPayloadCase());
         }
 
         T payload = mapToAvro(event);
@@ -34,14 +36,16 @@ public abstract class BaseSensorEventHandler<T extends SpecificRecordBase> imple
         SensorEventAvro sensorEventAvro = SensorEventAvro.newBuilder()
                 .setHubId(event.getHubId())
                 .setId(event.getId())
-                .setTimestamp(event.getTimestamp())
+                .setTimestamp(Instant.ofEpochSecond(
+                        event.getTimestamp().getSeconds(),
+                        event.getTimestamp().getNanos()))
                 .setPayload(payload)
                 .build();
 
         ProducerRecord<String, SpecificRecordBase> record = new ProducerRecord<>(
                 topic,
                 null,
-                event.getTimestamp().toEpochMilli(),
+                sensorEventAvro.getTimestamp().toEpochMilli(),
                 sensorEventAvro.getHubId(),
                 sensorEventAvro);
         producer.send(record);
