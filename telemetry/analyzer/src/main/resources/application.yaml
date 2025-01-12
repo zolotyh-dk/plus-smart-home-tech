@@ -2,6 +2,9 @@ kafka:
   topics:
     snapshots: "telemetry.snapshots.v1"
     hubs: "telemetry.hubs.v1"
+  group-id:
+    snapshots: telemetry.analyzer.snapshot
+    hubs: telemetry.analyzer.hub
 grpc:
   client:
     hub-router:
@@ -9,3 +12,9 @@ grpc:
       enableKeepAlive: true
       keepAliveWithoutCalls: true
       negotiationType: plaintext
+spring:
+  datasource:
+    driverClassName: "org.postgresql.Driver"
+    url: "jdbc:postgresql://localhost:5432/analyzer"
+    username: "user"
+    password: "12345"

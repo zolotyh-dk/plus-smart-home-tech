@@ -14,8 +14,8 @@ import lombok.ToString;
 @Setter
 @ToString
 @EqualsAndHashCode(of = "id")
-@Table(name = "sensors")
-public class Sensor {
+@Table(name = "devices")
+public class Device {
     @Id
     private String id;
 
