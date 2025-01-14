@@ -32,6 +32,7 @@ public class SnapshotListener {
     public void start() {
         try {
             snapshotsConsumer.subscribe(List.of(snapshotsTopic));
+            log.info("Подписка на топик {}", snapshotsTopic);
             while (true) {
                 ConsumerRecords<String, SensorsSnapshotAvro> snapshotsRecords =
                         snapshotsConsumer.poll(Duration.ofMillis(1000));

@@ -24,5 +24,5 @@ CREATE TABLE IF NOT EXISTS deviceActions (
     type VARCHAR,
     value INTEGER,
     scenario_id BIGINT REFERENCES scenarios(id),
-    device_id VARCHAR REFERENCES devices(id) ON DELETE CASCADE,
+    device_id VARCHAR REFERENCES devices(id) ON DELETE CASCADE
 );

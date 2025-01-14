@@ -1,4 +1,5 @@
 kafka:
+  bootstrap-servers: localhost:9092
   topics:
     snapshots: "telemetry.snapshots.v1"
     hubs: "telemetry.hubs.v1"
@@ -15,6 +16,6 @@ grpc:
 spring:
   datasource:
     driverClassName: "org.postgresql.Driver"
-    url: "jdbc:postgresql://localhost:5432/analyzer"
-    username: "user"
-    password: "12345"
+    url: "jdbc:postgresql://localhost:5433/analyzer"
+    username: "postgres"
+    password: "postgres"

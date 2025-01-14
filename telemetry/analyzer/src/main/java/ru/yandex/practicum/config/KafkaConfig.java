@@ -29,9 +29,14 @@ public class KafkaConfig {
     private String hubEventTopic;
 
     @Value("${kafka.topics.snapshots}")
-    private String snapshotsTopic;
+    private String snapshotTopic;
 
-    @Bean
+    @Bean("snapshotsTopic")
+    public String snapshotsTopic() {
+        return snapshotTopic;
+    }
+
+    @Bean("hubEventsTopic")
     public String hubEventTopic() {
         return hubEventTopic;
     }
