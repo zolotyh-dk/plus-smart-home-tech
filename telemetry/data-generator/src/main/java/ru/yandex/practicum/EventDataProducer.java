@@ -20,7 +20,6 @@ import java.util.concurrent.ThreadLocalRandom;
 @Slf4j
 public class EventDataProducer {
     private final SensorConfig sensorConfig;
-
     private final Map<String, Integer> lastValues = new HashMap<>();
 
     @GrpcClient("collector")
