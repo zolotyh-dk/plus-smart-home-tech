@@ -34,8 +34,7 @@ public class SnapshotListener {
             snapshotsConsumer.subscribe(List.of(snapshotsTopic));
             log.info("Подписка на топик {}", snapshotsTopic);
             while (true) {
-                ConsumerRecords<String, SensorsSnapshotAvro> snapshotsRecords =
-                        snapshotsConsumer.poll(Duration.ofMillis(1000));
+                processRecords(snapshotsConsumer.poll(Duration.ofMillis(1000)));
 
                 for (ConsumerRecord<String, SensorsSnapshotAvro> record : snapshotsRecords) {
                     log.info("Получено сообщение {}\nтипа {}\nиз топика {}\nиз партиции {}\nсо смещением {}",
@@ -59,5 +58,13 @@ public class SnapshotListener {
                 snapshotsConsumer.close();
             }
         }
+    }
+
+    private void processRecords(ConsumerRecord<String, SensorsSnapshotAvro> records) {
+        for (ConsumerRecord<String, SensorsSnapshotAvro> record : records) {
+            logRecordDetails(record);
+            processRecord(record);
+        }
+        snapshotsConsumer.commitSync();
     }
 }

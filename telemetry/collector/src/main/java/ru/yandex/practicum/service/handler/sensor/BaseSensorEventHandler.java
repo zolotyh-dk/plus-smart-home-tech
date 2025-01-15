@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import ru.yandex.practicum.grpc.telemetry.event.SensorEventProto;
@@ -48,8 +49,33 @@ public abstract class BaseSensorEventHandler<T extends SpecificRecordBase> imple
                 sensorEventAvro.getTimestamp().toEpochMilli(),
                 sensorEventAvro.getHubId(),
                 sensorEventAvro);
-        producer.send(record);
+        logProducerRecord(record);
+        producer.send(record, (metadata, exception) -> {
+            if (exception != null) {
+                log.error("Ошибка при отправке сообщения в Kafka: {}", exception.getMessage(), exception);
+            } else {
+                logMessageSent(record, metadata);
+            }
+        });
+    }
 
-        log.info("Отправили в Kafka: {}", record);
+    private void logProducerRecord(ProducerRecord<String, SpecificRecordBase> producerRecord) {
+        log.info("Отправляем ProducerRecord: Topic={}, Key={}, Partition={}, Timestamp={}",
+                producerRecord.topic(),
+                producerRecord.key(),
+                producerRecord.partition() != null ? producerRecord.partition() : "Автоматическое назначение",
+                producerRecord.timestamp() != null ? producerRecord.timestamp() : "Не задан");
+
+        if (log.isDebugEnabled()) {
+            log.debug("Полное сообщение ProducerRecord: {}", producerRecord);
+        }
+    }
+
+    private void logMessageSent(ProducerRecord<String, SpecificRecordBase> producerRecord, RecordMetadata metadata) {
+        log.info("Сообщение отправлено в Kafka: Topic={}, Offset={}", metadata.topic(), metadata.offset());
+
+        if (log.isDebugEnabled()) {
+            log.debug("Полное сообщение ProducerRecord: {}", producerRecord);
+        }
     }
 }

@@ -69,6 +69,7 @@ public class EventDataProducer {
 
         return SensorEventProto.newBuilder()
                 .setId(sensor.getId())
+                .setHubId("TestHubId")
                 .setTimestamp(Timestamp.newBuilder()
                         .setSeconds(ts.getEpochSecond())
                         .setNanos(ts.getNano())
@@ -87,6 +88,7 @@ public class EventDataProducer {
 
         return SensorEventProto.newBuilder()
                 .setId(sensor.getId())
+                .setHubId("TestHubId")
                 .setTimestamp(Timestamp.newBuilder()
                         .setSeconds(ts.getEpochSecond())
                         .setNanos(ts.getNano())
@@ -106,6 +108,7 @@ public class EventDataProducer {
 
         return SensorEventProto.newBuilder()
                 .setId(sensor.getId())
+                .setHubId("TestHubId")
                 .setTimestamp(Timestamp.newBuilder()
                         .setSeconds(ts.getEpochSecond())
                         .setNanos(ts.getNano())
@@ -125,6 +128,7 @@ public class EventDataProducer {
 
         return SensorEventProto.newBuilder()
                 .setId(sensor.getId())
+                .setHubId("TestHubId")
                 .setTimestamp(Timestamp.newBuilder()
                         .setSeconds(ts.getEpochSecond())
                         .setNanos(ts.getNano())
@@ -144,6 +148,7 @@ public class EventDataProducer {
 
         return SensorEventProto.newBuilder()
                 .setId(sensor.getId())
+                .setHubId("TestHubId")
                 .setTimestamp(Timestamp.newBuilder()
                         .setSeconds(ts.getEpochSecond())
                         .setNanos(ts.getNano())

@@ -33,7 +33,8 @@ public class EventCollector extends CollectorControllerGrpc.CollectorControllerI
 
     @Override
     public void collectSensorEvent(SensorEventProto request, StreamObserver<Empty> responseObserver) {
-        log.info("Получили событие от датчика: {}", request);
+        log.info("Получили событие от датчика c id: {}", request.getId());
+        log.debug("Получили событие от датчика: {}", request);
         try {
             if (sensorEventHandlers.containsKey(request.getPayloadCase())) {
                 sensorEventHandlers.get(request.getPayloadCase()).handle(request);
@@ -51,6 +52,7 @@ public class EventCollector extends CollectorControllerGrpc.CollectorControllerI
 
     @Override
     public void collectHubEvent(HubEventProto request, StreamObserver<Empty> responseObserver) {
+        log.debug("Получили событие от хаба c id: {}", request.getHubId());
         log.info("Получили событие от хаба: {}", request);
         try {
             if (hubEventHandlers.containsKey(request.getPayloadCase())) {

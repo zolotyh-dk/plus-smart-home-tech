@@ -46,6 +46,7 @@ public class AggregationStarter {
     private void processRecords(ConsumerRecords<String, SensorEventAvro> records) {
         for (ConsumerRecord<String, SensorEventAvro> record : records) {
             try {
+                logReceivedRecord(record);
                 processRecord(record);
             } catch (Exception e) {
                 log.error("Ошибка при обработке записи: ключ={}, значение={}", record.key(), record.value(), e);
@@ -61,7 +62,11 @@ public class AggregationStarter {
 
     private void sendSnapshot(SensorsSnapshotAvro snapshot) {
         ProducerRecord<String, SensorsSnapshotAvro> producerRecord =
-                new ProducerRecord<>(outputTopic, snapshot.getHubId(), snapshot);
+                new ProducerRecord<>(outputTopic,
+                        null,
+                        snapshot.getTimestamp().toEpochMilli(),
+                        snapshot.getHubId(),
+                        snapshot);
         logProducerRecord(producerRecord);
         producer.send(producerRecord, (metadata, exception) -> {
             if (exception != null) {
@@ -72,8 +77,21 @@ public class AggregationStarter {
         });
     }
 
+    private void logReceivedRecord(ConsumerRecord<String, SensorEventAvro> record) {
+        log.info("Получено сообщение от Kafka: Topic={}, Partition={}, Offset={}, Key={}, Timestamp={}",
+                record.topic(),
+                record.partition(),
+                record.offset(),
+                record.key(),
+                record.timestamp());
+
+        if (log.isDebugEnabled()) {
+            log.debug("Полное сообщение ConsumerRecord: {}", record);
+        }
+    }
+
     private void logProducerRecord(ProducerRecord<String, SensorsSnapshotAvro> producerRecord) {
-        log.info("Отправляем ProducerRecord: Partition={}, Key={}, Topic={}, Timestamp={}",
+        log.info("Отправляем ProducerRecord: Topic={}, Key={}, Partition={}, Timestamp={}",
                 producerRecord.topic(),
                 producerRecord.key(),
                 producerRecord.partition() != null ? producerRecord.partition() : "Автоматическое назначение",
