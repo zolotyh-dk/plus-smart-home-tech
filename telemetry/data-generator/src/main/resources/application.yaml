@@ -1,3 +1,7 @@
+logging:
+  level:
+    ru.yandex.practicum: debug
+    root: info
 grpc:
   client:
     collector:
