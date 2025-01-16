@@ -15,6 +15,7 @@ import ru.yandex.practicum.repository.ScenarioRepository;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Set;
 
 @Component
 @Slf4j
@@ -39,7 +40,7 @@ public class SnapshotHandler {
     }
 
     private void executeActionsForScenario(Scenario scenario) {
-        List<DeviceAction> actions = scenario.getActions();
+        Set<DeviceAction> actions = scenario.getActions();
         for (DeviceAction action : actions) {
             sendActionToGrpc(action, scenario, action.getDeviceId());
         }

@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS conditions (
     type VARCHAR,
     operation VARCHAR,
     value INTEGER,
-    sensor_id VARCHAR REFERENCES devices(id) ON DELETE CASCADE,
+    device_id VARCHAR REFERENCES devices(id) ON DELETE CASCADE,
     scenario_id BIGINT REFERENCES scenarios(id) ON DELETE CASCADE
 );
 

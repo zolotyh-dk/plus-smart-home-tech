@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -26,8 +26,8 @@ public class Scenario {
     private String hubId;
 
     @OneToMany(mappedBy = "scenario", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ScenarioCondition> conditions;
+    private Set<ScenarioCondition> conditions;
 
     @OneToMany(mappedBy = "scenario", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DeviceAction> actions;
+    private Set<DeviceAction> actions;
 }

@@ -39,34 +39,60 @@ public class HubEventListener implements Runnable {
             hubEventConsumer.subscribe(List.of(hubEventsTopic));
             log.info("Подписка на топик {}", hubEventsTopic);
             while (true) {
-                ConsumerRecords<String, HubEventAvro> hubEventsRecords = hubEventConsumer.poll(Duration.ofMillis(1000));
-
-                for (ConsumerRecord<String, HubEventAvro> record : hubEventsRecords) {
-                    log.info("Получено сообщение {} из партиции {}, со смещением {}:",
-                            record.value(), record.partition(), record.offset());
-
-                    String hubId = record.value().getHubId();
-                    Object payload = record.value().getPayload();
-                    Class<?> payloadType = payload.getClass();
-
-                    if (handlers.containsKey(payloadType)) {
-                        handlers.get(payloadType).handle(payload, hubId);
-                    } else {
-                        throw new IllegalArgumentException("Не найден обработчик для события типа " + payloadType);
-                    }
-                }
+                processRecords(hubEventConsumer.poll(Duration.ofMillis(1000)));
             }
         } catch (WakeupException ignored) {
-            // игнорируем - закрываем консьюмер и продюсер в блоке finally
         } catch (Exception e) {
             log.error("Ошибка во время обработки события хаба", e);
         } finally {
-            try {
-                hubEventConsumer.commitSync();
-            } finally {
-                log.info("Закрываем консьюмер");
-                hubEventConsumer.close();
+            shutdownConsumer();
+        }
+    }
+
+    private void processRecords(ConsumerRecords<String, HubEventAvro> records) {
+        for (ConsumerRecord<String, HubEventAvro> record : records) {
+            logRecordDetails(record);
+            processRecord(record);
+        }
+        hubEventConsumer.commitSync();
+    }
+
+    private void processRecord(ConsumerRecord<String, HubEventAvro> record) {
+        try {
+            String hubId = record.value().getHubId();
+            Object payload = record.value().getPayload();
+            Class<?> payloadType = payload.getClass();
+
+            if (handlers.containsKey(payloadType)) {
+                handlers.get(payloadType).handle(payload, hubId);
+            } else {
+                throw new IllegalArgumentException("Не найден обработчик для события типа " + payloadType);
             }
+        } catch (Exception e) {
+            log.error("Ошибка при обработке сообщения: {}", record.value(), e);
+        }
+    }
+
+    private void logRecordDetails(ConsumerRecord<String, HubEventAvro> record) {
+        log.info("Получено сообщение от Kafka: Topic={}, Partition={}, Offset={}, Key={}, Timestamp={}",
+                record.topic(),
+                record.partition(),
+                record.offset(),
+                record.key(),
+                record.timestamp());
+
+        if (log.isDebugEnabled()) {
+            log.debug("Полное сообщение: {}", record.value());
+        }
+    }
+
+    private void shutdownConsumer() {
+        try {
+            hubEventConsumer.commitSync();
+            log.info("Смещения зафиксированы");
+        } finally {
+            log.info("Закрываем консьюмер");
+            hubEventConsumer.close();
         }
     }
 }

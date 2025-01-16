@@ -12,8 +12,9 @@ import ru.yandex.practicum.model.Scenario;
 import ru.yandex.practicum.model.ScenarioCondition;
 import ru.yandex.practicum.repository.ScenarioRepository;
 
-import java.util.List;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
@@ -35,9 +36,11 @@ public class ScenarioAddedHandler implements HubEventHandler {
         scenario.setHubId(hubId);
         scenario.setName(scenarioName);
 
-        List<DeviceAction> deviceActions = deviceActionMapper.toActions(scenarioAddedAvro.getActions(), scenario);
+        Set<DeviceAction> deviceActions = deviceActionMapper
+                .toActions(new HashSet<>(scenarioAddedAvro.getActions()), scenario);
         scenario.setActions(deviceActions);
-        List<ScenarioCondition> conditions = scenarioConditionMapper.toConditions(scenarioAddedAvro.getConditions(), scenario);
+        Set<ScenarioCondition> conditions = scenarioConditionMapper
+                .toConditions(new HashSet<>(scenarioAddedAvro.getConditions()), scenario);
         scenario.setConditions(conditions);
 
         scenarioRepository.save(scenario);

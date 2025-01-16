@@ -86,7 +86,7 @@ public class AggregationStarter {
                 record.timestamp());
 
         if (log.isDebugEnabled()) {
-            log.debug("Полное сообщение ConsumerRecord: {}", record);
+            log.debug("Полное сообщение: {}", record.value());
         }
     }
 

@@ -31,7 +31,7 @@ public class EventDataProducer {
         this.collectorStub = collectorStub;
     }
 
-    @Scheduled(fixedRate = 2000)
+    @Scheduled(fixedRate = 3000)
     public void generateAndSendRandomEvent() {
         SensorType sensorType = SensorType.getRandomType();
         log.debug("Выбран датчик типа: {}", sensorType);

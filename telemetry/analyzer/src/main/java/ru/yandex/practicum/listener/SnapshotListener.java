@@ -35,36 +35,51 @@ public class SnapshotListener {
             log.info("Подписка на топик {}", snapshotsTopic);
             while (true) {
                 processRecords(snapshotsConsumer.poll(Duration.ofMillis(1000)));
-
-                for (ConsumerRecord<String, SensorsSnapshotAvro> record : snapshotsRecords) {
-                    log.info("Получено сообщение {}\nтипа {}\nиз топика {}\nиз партиции {}\nсо смещением {}",
-                            record.value(),
-                            record.value().getClass().getSimpleName(),
-                            snapshotsTopic,
-                            record.partition(),
-                            record.offset());
-                    SensorsSnapshotAvro snapshot = record.value();
-                    snapshotHandler.handle(snapshot);
-                }
             }
         } catch (WakeupException ignored) {
         } catch (Exception e) {
             log.error("Ошибка во время обработки снапшота", e);
         } finally {
-            try {
-                snapshotsConsumer.commitSync();
-            } finally {
-                log.info("Закрываем консьюмер");
-                snapshotsConsumer.close();
-            }
+            shutdownConsumer();
         }
     }
 
-    private void processRecords(ConsumerRecord<String, SensorsSnapshotAvro> records) {
+    private void processRecords(ConsumerRecords<String, SensorsSnapshotAvro> records) {
         for (ConsumerRecord<String, SensorsSnapshotAvro> record : records) {
             logRecordDetails(record);
             processRecord(record);
         }
         snapshotsConsumer.commitSync();
+    }
+
+    private void processRecord(ConsumerRecord<String, SensorsSnapshotAvro> record) {
+        try {
+            snapshotHandler.handle(record.value());
+        } catch (Exception e) {
+            log.error("Ошибка при обработке сообщения: {}", record.value(), e);
+        }
+    }
+
+    private void logRecordDetails(ConsumerRecord<String, SensorsSnapshotAvro> record) {
+        log.info("Получено сообщение от Kafka: Topic={}, Partition={}, Offset={}, Key={}, Timestamp={}",
+                record.topic(),
+                record.partition(),
+                record.offset(),
+                record.key(),
+                record.timestamp());
+
+        if (log.isDebugEnabled()) {
+            log.debug("Полное сообщение: {}", record.value());
+        }
+    }
+
+    private void shutdownConsumer() {
+        try {
+            snapshotsConsumer.commitSync();
+            log.info("Смещения зафиксированы");
+        } finally {
+            log.info("Закрываем консьюмер");
+            snapshotsConsumer.close();
+        }
     }
 }

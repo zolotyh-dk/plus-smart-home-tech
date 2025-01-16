@@ -5,7 +5,7 @@ import ru.yandex.practicum.kafka.telemetry.event.ScenarioConditionAvro;
 import ru.yandex.practicum.model.Scenario;
 import ru.yandex.practicum.model.ScenarioCondition;
 
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -23,12 +23,12 @@ public class ScenarioConditionMapper {
         return scenarioCondition;
     }
 
-    public List<ScenarioCondition> toConditions(List<ScenarioConditionAvro> avros, Scenario scenario) {
+    public Set<ScenarioCondition> toConditions(Set<ScenarioConditionAvro> avros, Scenario scenario) {
         if (avros == null || avros.isEmpty()) {
-            return List.of();
+            return Set.of();
         }
         return avros.stream()
                 .map(avro -> toCondition(avro, scenario))
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 }
