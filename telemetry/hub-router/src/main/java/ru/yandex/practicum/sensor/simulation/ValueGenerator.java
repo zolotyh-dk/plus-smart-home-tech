@@ -1,4 +1,4 @@
-package ru.yandex.practicum;
+package ru.yandex.practicum.sensor.simulation;
 
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.config.SensorConfig;

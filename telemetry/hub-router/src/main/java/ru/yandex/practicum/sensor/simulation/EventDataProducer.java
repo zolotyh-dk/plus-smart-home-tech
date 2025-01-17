@@ -1,4 +1,4 @@
-package ru.yandex.practicum;
+package ru.yandex.practicum.sensor.simulation;
 
 import com.google.protobuf.Timestamp;
 import lombok.extern.slf4j.Slf4j;

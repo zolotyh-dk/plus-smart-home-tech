@@ -8,8 +8,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling
 @ConfigurationPropertiesScan
-public class DataGenerator {
+public class HubRouter {
     public static void main(String[] args) {
-        SpringApplication.run(DataGenerator.class, args);
+        SpringApplication.run(HubRouter.class, args);
     }
 }

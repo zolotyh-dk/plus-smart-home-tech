@@ -18,6 +18,7 @@ public class GrpcActionSender {
     }
 
     public void sendData(DeviceActionRequest deviceActionRequest) {
+
         Empty response = hubRouterClient.handleDeviceAction(deviceActionRequest);
         if (response.isInitialized()) {
             log.info("Получили ответ от хаба");
