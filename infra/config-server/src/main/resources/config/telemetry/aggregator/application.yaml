@@ -2,6 +2,7 @@ logging:
   level:
     ru.yandex.practicum: debug
     root: info
+
 kafka:
   bootstrap-servers: localhost:9092
   input-topic: telemetry.sensors.v1
