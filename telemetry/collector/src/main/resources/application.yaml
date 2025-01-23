@@ -1,15 +1,11 @@
-logging:
-  level:
-    ru.yandex.practicum: info
-    root: info
-server:
-  port: 8081
-grpc:
-  server:
-    port: 9090
-kafka:
-  topic:
-    hub: telemetry.hubs.v1
-    sensor: telemetry.sensors.v1
-  bootstrap:
-    server: localhost:9092
+spring:
+  application:
+    name: collector
+  config:
+    import: configserver:http://localhost:8889
+  cloud:
+    config:
+      fail-fast: true
+      retry:
+        useRandomPolicy: true
+        max-interval: 6000
