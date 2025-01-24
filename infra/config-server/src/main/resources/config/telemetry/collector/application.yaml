@@ -1,10 +1,10 @@
+server:
+  port: 0
+
 logging:
   level:
     ru.yandex.practicum: info
     root: info
-
-server:
-  port: 8081
 
 grpc:
   server:
