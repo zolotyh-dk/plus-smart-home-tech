@@ -3,6 +3,7 @@ package ru.yandex.practicum.dto;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 
 import java.util.UUID;
 
@@ -18,6 +19,7 @@ import java.util.UUID;
  * @param productCategory категория товара
  * @param price           цена товара
  */
+@Builder
 public record ProductDto(
         UUID productId,
 
