@@ -1,6 +1,7 @@
 package ru.yandex.practicum.dto;
 
-import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.UUID;
@@ -18,13 +19,12 @@ import java.util.UUID;
  * @param price           цена товара
  */
 public record ProductDto(
-        @NotNull
         UUID productId,
 
-        @NotNull
+        @NotBlank
         String productName,
 
-        @NotNull
+        @NotBlank
         String description,
 
         String imageSrc,
@@ -38,7 +38,7 @@ public record ProductDto(
         ProductCategory productCategory,
 
         @NotNull
-        @Min(1)
+        @DecimalMin(value = "1.0", inclusive = true)
         Double price
 ) {
 }
