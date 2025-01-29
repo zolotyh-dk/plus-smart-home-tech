@@ -1,5 +1,7 @@
 package ru.yandex.practicum.dto;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.util.UUID;
 
 /**
@@ -9,7 +11,10 @@ import java.util.UUID;
  * @param quantityState     статус, перечисляющий состояние остатка как свойства товара
  */
 public record SetProductQuantityStateRequest(
+        @NotNull
         UUID productId,
+
+        @NotNull
         QuantityState quantityState
 ) {
 }
