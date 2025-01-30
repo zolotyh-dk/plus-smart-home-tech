@@ -4,6 +4,9 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practicum.dto.ProductDto;
 import ru.yandex.practicum.model.Product;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class ProductMapper {
     public Product toProduct(ProductDto dto) {
@@ -34,5 +37,12 @@ public class ProductMapper {
                 .productCategory(product.getCategory())
                 .price(product.getPrice())
                 .build();
+    }
+
+    public List<ProductDto> toProductDto(List<Product> products) {
+        if (products == null) {
+            return null;
+        }
+        return products.stream().map(this::toProductDto).collect(Collectors.toList());
     }
 }
