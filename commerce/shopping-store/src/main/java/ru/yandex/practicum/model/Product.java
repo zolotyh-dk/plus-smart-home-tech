@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import ru.yandex.practicum.dto.ProductCategory;
+import ru.yandex.practicum.dto.ProductState;
 import ru.yandex.practicum.dto.QuantityState;
 
 import java.math.BigDecimal;
@@ -24,7 +25,6 @@ import java.util.UUID;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(columnDefinition = "UUID DEFAULT gen_random_uuid()")
     private UUID id;
 
     @Column(name = "name", nullable = false)
@@ -54,4 +54,18 @@ public class Product {
     @NotNull
     @DecimalMin(value = "1.0")
     private BigDecimal price;
+
+    @Column(name = "product_state", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ProductState productState;
+
+    @PrePersist
+    protected void prePersist() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
+        if (productState == null) {
+            productState = ProductState.ACTIVE;
+        }
+    }
 }
