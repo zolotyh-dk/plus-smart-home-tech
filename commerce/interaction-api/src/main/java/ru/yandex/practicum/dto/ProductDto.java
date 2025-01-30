@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 /**
@@ -41,6 +42,6 @@ public record ProductDto(
 
         @NotNull
         @DecimalMin(value = "1.0", inclusive = true)
-        Double price
+        BigDecimal price
 ) {
 }
