@@ -1,5 +1,6 @@
 package ru.yandex.practicum.service;
 
+import org.springframework.data.domain.Pageable;
 import ru.yandex.practicum.dto.ProductCategory;
 import ru.yandex.practicum.dto.ProductDto;
 import ru.yandex.practicum.dto.SetProductQuantityStateRequest;
@@ -10,10 +11,9 @@ import java.util.UUID;
 public interface ShoppingStoreFacade {
     ProductDto getProductById(UUID productId);
 
-    List<ProductDto> getProducts(ProductCategory category, int page, int size, List<String> sort);
+    List<ProductDto> getProducts(ProductCategory category, Pageable pageable);
 
     ProductDto addProduct(ProductDto productDto);
-
 
     ProductDto updateProduct(ProductDto productDto);
 

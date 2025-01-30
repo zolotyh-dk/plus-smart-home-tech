@@ -2,8 +2,7 @@ package ru.yandex.practicum.controller;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.dto.ProductCategory;
 import ru.yandex.practicum.dto.ProductDto;
@@ -17,10 +16,7 @@ public interface ShoppingStoreOperations {
     ProductDto getProductById(@PathVariable UUID productId);
 
     @GetMapping
-    List<ProductDto> getProducts(@RequestParam ProductCategory category,
-                                 @RequestParam(defaultValue = "0") @PositiveOrZero int page,
-                                 @RequestParam(defaultValue = "10") @Positive int size,
-                                 @RequestParam List<String> sort);
+    List<ProductDto> getProducts(@RequestParam ProductCategory category, Pageable pageable);
 
     @PostMapping
     ProductDto addProduct(@RequestBody @Valid ProductDto productDto);
