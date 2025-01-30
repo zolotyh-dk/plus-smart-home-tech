@@ -41,7 +41,7 @@ public record ProductDto(
         ProductCategory productCategory,
 
         @NotNull
-        @DecimalMin(value = "1.0", inclusive = true)
+        @DecimalMin(value = "1.0")
         BigDecimal price
 ) {
 }
