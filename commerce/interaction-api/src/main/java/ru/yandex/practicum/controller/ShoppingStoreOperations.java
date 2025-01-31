@@ -4,9 +4,9 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.dto.ProductCategory;
-import ru.yandex.practicum.dto.ProductDto;
-import ru.yandex.practicum.dto.SetProductQuantityStateRequest;
+import ru.yandex.practicum.dto.product.ProductCategory;
+import ru.yandex.practicum.dto.product.ProductDto;
+import ru.yandex.practicum.dto.product.SetProductQuantityStateRequest;
 
 import java.util.List;
 import java.util.UUID;

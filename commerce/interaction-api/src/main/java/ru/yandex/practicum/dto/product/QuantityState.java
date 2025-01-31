@@ -1,4 +1,4 @@
-package ru.yandex.practicum.dto;
+package ru.yandex.practicum.dto.product;
 
 /**
  * Статус, перечисляющий состояние остатка как свойства товара

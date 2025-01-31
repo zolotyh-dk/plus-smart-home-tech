@@ -9,9 +9,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import ru.yandex.practicum.dto.ProductCategory;
-import ru.yandex.practicum.dto.ProductState;
-import ru.yandex.practicum.dto.QuantityState;
+import ru.yandex.practicum.dto.product.ProductCategory;
+import ru.yandex.practicum.dto.product.ProductState;
+import ru.yandex.practicum.dto.product.QuantityState;
 
 import java.math.BigDecimal;
 import java.util.UUID;
