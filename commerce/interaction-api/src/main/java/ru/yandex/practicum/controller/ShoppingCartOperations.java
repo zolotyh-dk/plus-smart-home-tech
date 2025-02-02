@@ -18,7 +18,7 @@ public interface ShoppingCartOperations {
      * Получить актуальную корзину для авторизованного пользователя
      *
      * @param username Имя пользователя
-     * @return Ранее созданная или новая, в случае ранее созданной, корзина в онлайн магазине
+     * @return Ранее созданная или новая корзина в онлайн магазине
      */
     @GetMapping
     ShoppingCartDto getShoppingCart(@RequestParam @NotBlank String username);
