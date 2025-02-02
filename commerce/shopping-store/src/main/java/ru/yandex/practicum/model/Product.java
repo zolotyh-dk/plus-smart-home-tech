@@ -24,7 +24,6 @@ import java.util.UUID;
 @Setter
 public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @Column(name = "name", nullable = false)
