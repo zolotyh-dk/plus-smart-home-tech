@@ -19,7 +19,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "products")
 @EqualsAndHashCode(of = "id")
-@ToString
+@ToString(exclude = "description")
 @Getter
 @Setter
 public class Product {
@@ -56,15 +56,13 @@ public class Product {
 
     @Column(name = "product_state", nullable = false)
     @Enumerated(EnumType.STRING)
-    private ProductState productState;
+    @NotNull
+    private ProductState productState = ProductState.ACTIVE;
 
     @PrePersist
     protected void prePersist() {
         if (id == null) {
             id = UUID.randomUUID();
-        }
-        if (productState == null) {
-            productState = ProductState.ACTIVE;
         }
     }
 }
