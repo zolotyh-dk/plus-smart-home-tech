@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS shopping_cart
 (
-    id UUID PRIMARY KEY NOT NULL
+    id UUID PRIMARY KEY NOT NULL,
+    username VARCHAR(100) NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS shopping_cart_product
