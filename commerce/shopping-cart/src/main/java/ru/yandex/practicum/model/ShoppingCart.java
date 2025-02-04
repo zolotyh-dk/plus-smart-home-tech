@@ -24,12 +24,10 @@ public class ShoppingCart {
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             orphanRemoval = true)
-    private List<ShoppingCartProduct> products = new ArrayList<>();
+    private List<ShoppingCartProduct> products;
 
-    @PrePersist
-    protected void prePersist() {
-        if (id == null) {
-            id = UUID.randomUUID();
-        }
+    public ShoppingCart() {
+        id = UUID.randomUUID();
+        products = new ArrayList<>();
     }
 }

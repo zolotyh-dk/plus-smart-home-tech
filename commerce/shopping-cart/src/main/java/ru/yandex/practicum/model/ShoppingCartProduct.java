@@ -33,10 +33,7 @@ public class ShoppingCartProduct {
     @JoinColumn(name = "shopping_cart_id", nullable = false)
     private ShoppingCart shoppingCart;
 
-    @PrePersist
-    protected void prePersist() {
-        if (id == null) {
-            id = UUID.randomUUID();
-        }
+    public ShoppingCartProduct() {
+        id = UUID.randomUUID();
     }
 }

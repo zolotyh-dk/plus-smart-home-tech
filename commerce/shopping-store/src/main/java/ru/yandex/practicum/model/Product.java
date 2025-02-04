@@ -57,12 +57,10 @@ public class Product {
     @Column(name = "product_state", nullable = false)
     @Enumerated(EnumType.STRING)
     @NotNull
-    private ProductState productState = ProductState.ACTIVE;
+    private ProductState productState;
 
-    @PrePersist
-    protected void prePersist() {
-        if (id == null) {
-            id = UUID.randomUUID();
-        }
+    public Product() {
+        id = UUID.randomUUID();
+        productState = ProductState.ACTIVE;
     }
 }
