@@ -31,8 +31,17 @@ public class ShoppingCart {
             orphanRemoval = true)
     private List<ShoppingCartProduct> products;
 
+    @Column(name = "state", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ShoppingCartState state;
+
     public ShoppingCart() {
         id = UUID.randomUUID();
         products = new ArrayList<>();
+        state = ShoppingCartState.ACTIVE;
+    }
+
+    public boolean isActive() {
+        return ShoppingCartState.ACTIVE.equals(state);
     }
 }
