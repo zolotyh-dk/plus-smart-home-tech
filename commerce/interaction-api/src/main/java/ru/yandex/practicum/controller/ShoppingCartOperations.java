@@ -1,7 +1,6 @@
 package ru.yandex.practicum.controller;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.dto.cart.BookedProductsDto;
 import ru.yandex.practicum.dto.cart.ChangeProductQuantityRequest;
@@ -21,7 +20,7 @@ public interface ShoppingCartOperations {
      * @return Ранее созданная или новая корзина в онлайн магазине
      */
     @GetMapping
-    ShoppingCartDto getShoppingCart(@RequestParam @NotBlank String username);
+    ShoppingCartDto getShoppingCart(@RequestParam String username);
 
     /**
      * Добавить товар в корзину
@@ -31,7 +30,7 @@ public interface ShoppingCartOperations {
      * @return Корзина товаров с изменениями
      */
     @PostMapping
-    ShoppingCartDto addProductsToCart(@RequestParam @NotBlank String username,
+    ShoppingCartDto addProductsToCart(@RequestParam String username,
                                       @RequestBody Map<UUID, Long> products);
 
     /**
@@ -40,7 +39,7 @@ public interface ShoppingCartOperations {
      * @param username Имя пользователя
      */
     @DeleteMapping
-    void deactivateShoppingCart(@RequestParam @NotBlank String username);
+    void deactivateShoppingCart(@RequestParam String username);
 
     /**
      * Изменить состав товаров в корзине, т.е. удалить другие
@@ -50,7 +49,7 @@ public interface ShoppingCartOperations {
      * @return Корзина товаров с изменениями
      */
     @PutMapping("/remove")
-    ShoppingCartDto replaceShoppingCartContents(@RequestParam @NotBlank String username,
+    ShoppingCartDto replaceShoppingCartContents(@RequestParam String username,
                                                 @RequestBody Map<UUID, Long> products);
 
     /**
@@ -61,7 +60,7 @@ public interface ShoppingCartOperations {
      * @return Корзина товаров с изменениями
      */
     @PutMapping("/change-quantity")
-    ShoppingCartDto changeProductQuantity(@RequestParam @NotBlank String username,
+    ShoppingCartDto changeProductQuantity(@RequestParam String username,
                                           @RequestBody @Valid ChangeProductQuantityRequest request);
 
     /**
@@ -71,5 +70,5 @@ public interface ShoppingCartOperations {
      * @return Описательный объект со сведениями о бронировании
      */
     @PostMapping("/booking")
-    BookedProductsDto bookProducts(@RequestParam @NotBlank String username);
+    BookedProductsDto bookProducts(@RequestParam String username);
 }
