@@ -90,7 +90,7 @@ public class ShoppingCartFacadeImpl implements ShoppingCartFacade {
                 .setQuantity(request.newQuantity());
         ShoppingCartDto shoppingCartDto = shoppingCartMapper.toDto(shoppingCart);
         log.debug("Возвращаем обновленную корзину пользователя {}", shoppingCartDto);
-        return null;
+        return shoppingCartDto;
     }
 
     @Override
