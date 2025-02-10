@@ -1,6 +1,5 @@
 package ru.yandex.practicum.mapper;
 
-import org.springframework.boot.autoconfigure.amqp.RabbitConnectionDetails;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.dto.warehouse.AddressDto;
 
