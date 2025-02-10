@@ -26,4 +26,7 @@ public class Product {
 
     @Column(name = "weight")
     private double weight;
+
+    @Column(name = "quantity", nullable = false)
+    private long quantity;
 }
