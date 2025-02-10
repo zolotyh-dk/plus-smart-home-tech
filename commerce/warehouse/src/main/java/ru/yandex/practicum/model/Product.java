@@ -19,7 +19,7 @@ public class Product {
     private UUID id;
 
     @Column(name = "fragile")
-    private boolean fragile;
+    private Boolean fragile;
 
     @Embedded
     private Dimensions dimensions;
