@@ -1,6 +1,6 @@
 spring:
   application:
-    name: aggregator
+    name: shopping-store
   config:
     import: 'configserver:'
   cloud:
@@ -12,7 +12,6 @@ spring:
       retry:
         use-random-policy: true
         max-interval: 6000
-
 eureka:
   instance:
     hostname: localhost
