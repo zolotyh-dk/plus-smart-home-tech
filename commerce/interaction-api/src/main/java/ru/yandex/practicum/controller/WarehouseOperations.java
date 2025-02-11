@@ -29,7 +29,7 @@ public interface WarehouseOperations {
      * @return Общие сведения о зарезервированных товарах по корзине.
      */
     @PostMapping("/check")
-    BookedProductsDto check(@RequestBody @Valid ShoppingCartDto shoppingCartDto);
+    BookedProductsDto bookProducts(@RequestBody @Valid ShoppingCartDto shoppingCartDto);
 
     /**
      * Добавление определенного количества определенного товара на склад.

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.yandex.practicum.controller.WarehouseClient;
 import ru.yandex.practicum.dto.cart.BookedProductsDto;
 import ru.yandex.practicum.dto.cart.ChangeProductQuantityRequest;
 import ru.yandex.practicum.dto.cart.ShoppingCartDto;
@@ -27,7 +28,7 @@ import java.util.UUID;
 public class ShoppingCartFacadeImpl implements ShoppingCartFacade {
     private final ShoppingCartRepository shoppingCartRepository;
     private final ShoppingCartMapper shoppingCartMapper;
-    private final WarehouseService warehouseService;
+    private final WarehouseClient warehouseClient;
 
     @Override
     public ShoppingCartDto getShoppingCart(String username) {
@@ -101,7 +102,7 @@ public class ShoppingCartFacadeImpl implements ShoppingCartFacade {
             throw new ShoppingCartInactiveException(shoppingCart.getId());
         }
         ShoppingCartDto shoppingCartDto = shoppingCartMapper.toDto(shoppingCart);
-        BookedProductsDto bookedProductsDto = warehouseService.bookProducts(shoppingCartDto);
+        BookedProductsDto bookedProductsDto = warehouseClient.bookProducts(shoppingCartDto);
         log.debug("Забронировали товары в корзине : {}", bookedProductsDto);
         return bookedProductsDto;
     }

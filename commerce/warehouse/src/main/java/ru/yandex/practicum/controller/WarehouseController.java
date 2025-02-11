@@ -27,7 +27,7 @@ public class WarehouseController implements WarehouseOperations {
     }
 
     @Override
-    public BookedProductsDto check(@Valid ShoppingCartDto shoppingCartDto) {
+    public BookedProductsDto bookProducts(@Valid ShoppingCartDto shoppingCartDto) {
         log.info("POST /api/v1/warehouse/check - Проверка, что товаров на складе достаточно для корзины: {}", shoppingCartDto);
         BookedProductsDto response = warehouseService.check(shoppingCartDto);
         log.info("Ответ: {}", response);
