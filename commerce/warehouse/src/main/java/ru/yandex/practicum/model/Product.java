@@ -9,7 +9,7 @@ import lombok.ToString;
 import java.util.UUID;
 
 @Entity
-@Table(name = "products")
+@Table(schema = "warehouse", name = "products")
 @EqualsAndHashCode(of = "id")
 @Getter
 @Setter

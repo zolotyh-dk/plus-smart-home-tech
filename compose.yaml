@@ -34,7 +34,7 @@ services:
                              --bootstrap-server kafka:29092'"
     init: true
 
-  analyzer-db:
+  smart-home-db:
     image: postgres:15
     container_name: smart-home-db
     ports:

@@ -13,6 +13,9 @@ grpc:
   server:
     port: 0
 
+server:
+  port: 0
+
 sensor:
   motionSensors:
     - id: "motion-1"

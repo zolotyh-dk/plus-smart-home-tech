@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
-@Table(name = "products")
+@Table(schema = "store", name = "products")
 @EqualsAndHashCode(of = "id")
 @ToString(exclude = "description")
 @Getter
@@ -57,10 +57,9 @@ public class Product {
     @Column(name = "product_state", nullable = false)
     @Enumerated(EnumType.STRING)
     @NotNull
-    private ProductState productState;
+    private ProductState productState = ProductState.ACTIVE;
 
     public Product() {
         id = UUID.randomUUID();
-        productState = ProductState.ACTIVE;
     }
 }

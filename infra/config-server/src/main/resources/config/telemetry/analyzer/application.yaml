@@ -21,12 +21,15 @@ grpc:
 spring:
   datasource:
     driverClassName: "org.postgresql.Driver"
-    url: "jdbc:postgresql://localhost:5433/smart-home-db"
+    url: "jdbc:postgresql://localhost:5433/smarthome"
     username: "postgres"
     password: "postgres"
+#    data: classpath:data.sql
   sql:
     init:
-      data-locations: data.sql
+      data-locations: classpath:data.sql
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
 
 logging:
   level:

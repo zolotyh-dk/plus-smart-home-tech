@@ -45,7 +45,7 @@ public class ShoppingCartController implements ShoppingCartOperations {
 
     @Override
     public ShoppingCartDto replaceShoppingCartContents(String username, Map<UUID, Long> products) {
-        log.info("PUT /api/v1/shopping-cart/replace - Замена содержимого корзины пользователя: {}, новые товары: {}",
+        log.info("PUT /api/v1/shopping-cart/remove - Замена содержимого корзины пользователя: {}, новые товары: {}",
                 username, products);
         ShoppingCartDto response = facade.replaceShoppingCartContents(username, products);
         log.info("Ответ: {}", response);

@@ -72,6 +72,7 @@ public class ShoppingStoreFacadeImpl implements ShoppingStoreFacade {
         product.setImageSrc(productDto.imageSrc());
         product.setQuantityState(productDto.quantityState());
         product.setCategory(productDto.productCategory());
+        product.setProductState(productDto.productState());
         product.setPrice(productDto.price());
         log.debug("Обновили товар в DB - {}", product);
         return productMapper.toProductDto(product);

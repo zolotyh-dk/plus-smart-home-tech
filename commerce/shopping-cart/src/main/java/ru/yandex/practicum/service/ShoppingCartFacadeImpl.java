@@ -71,7 +71,8 @@ public class ShoppingCartFacadeImpl implements ShoppingCartFacade {
         }
         List<ShoppingCartProduct> shoppingCartProducts =
                 shoppingCartMapper.toShoppingCartProduct(products, shoppingCart);
-        shoppingCart.setProducts(shoppingCartProducts);
+        shoppingCart.getProducts().clear();
+        shoppingCart.getProducts().addAll(shoppingCartProducts);
         ShoppingCartDto shoppingCartDto = shoppingCartMapper.toDto(shoppingCart);
         log.debug("Возвращаем обновленную корзину пользователя {}", shoppingCartDto);
         return shoppingCartDto;

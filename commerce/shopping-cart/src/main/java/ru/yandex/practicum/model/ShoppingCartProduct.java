@@ -11,7 +11,7 @@ import lombok.ToString;
 import java.util.UUID;
 
 @Entity
-@Table(name = "shopping_cart_products")
+@Table(schema = "cart", name = "shopping_cart_products")
 @EqualsAndHashCode(of = "id")
 @ToString(exclude = "shoppingCart")
 @Getter
