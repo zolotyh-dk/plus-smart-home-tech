@@ -13,6 +13,7 @@ import ru.yandex.practicum.dto.warehouse.NewProductInWarehouseRequest;
 /**
  * API для обеспечения работы склада онлайн магазина
  */
+
 public interface WarehouseOperations {
     /**
      * Добавить новый товар на склад.

@@ -11,6 +11,8 @@ import ru.yandex.practicum.dto.warehouse.AddressDto;
 import ru.yandex.practicum.dto.warehouse.NewProductInWarehouseRequest;
 import ru.yandex.practicum.exception.NoSpecifiedProductInWarehouseException;
 import ru.yandex.practicum.exception.ProductInShoppingCartLowQuantityInWarehouse;
+import ru.yandex.practicum.exception.ProductInShoppingCartNotInWarehouse;
+import ru.yandex.practicum.exception.SpecifiedProductAlreadyInWarehouseException;
 import ru.yandex.practicum.mapper.AddressMapper;
 import ru.yandex.practicum.mapper.ProductMapper;
 import ru.yandex.practicum.model.Product;
@@ -18,6 +20,7 @@ import ru.yandex.practicum.repository.ProductRepository;
 
 import java.security.SecureRandom;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +35,9 @@ public class WarehouseServiceImpl implements WarehouseService {
     @Override
     public void addProduct(NewProductInWarehouseRequest request) {
         log.debug("Добавляем продукт на склад: {}", request);
+        if (productRepository.existsById(request.productId())) {
+            throw new SpecifiedProductAlreadyInWarehouseException(request.productId());
+        }
         Product product = productMapper.toProduct(request);
         Product savedProduct = productRepository.save(product);
         log.debug("Добавили продукт на склад: {}", savedProduct);
@@ -43,19 +49,8 @@ public class WarehouseServiceImpl implements WarehouseService {
         log.debug("Проверяем доступность товаров из корзины: {}", shoppingCartDto);
         Map<UUID, Long> requiredProducts = shoppingCartDto.products();
         Set<Product> storedProducts = productRepository.findAllByIdIn(requiredProducts.keySet());
-        Set<UUID> deficitProducts = new HashSet<>();
-        storedProducts.forEach(product -> {
-            long requiredQuantity = requiredProducts.get(product.getId());
-            long existingQuantity = product.getQuantity();
-                    if (existingQuantity < requiredQuantity) {
-                        log.debug("Товара с ID: {} недостаточно на складе. Требуется: {}, есть: {}",
-                                product.getId(), requiredQuantity, existingQuantity);
-                        deficitProducts.add(product.getId());
-                    }
-                });
-        if (!deficitProducts.isEmpty()) {
-            throw new ProductInShoppingCartLowQuantityInWarehouse(deficitProducts);
-        }
+        checkAllProductsExists(storedProducts, requiredProducts);
+        checkProductsQuantity(storedProducts, requiredProducts);
         BookedProductsDto bookedProductsDto = productMapper.toDto(requiredProducts, storedProducts);
         log.debug("Сформировали доставку: {}", bookedProductsDto);
         return bookedProductsDto;
@@ -77,5 +72,24 @@ public class WarehouseServiceImpl implements WarehouseService {
         AddressDto addressDto = addressMapper.toDto(address);
         log.debug("Адрес склада: {}", addressDto);
         return addressDto;
+    }
+
+    private void checkAllProductsExists(Set<Product> storedProducts, Map<UUID, Long> requiredProducts) {
+        Set<UUID> storedProductIds = storedProducts.stream().map(Product::getId).collect(Collectors.toSet());
+        Set<UUID> notFoundProducts = new HashSet<>(requiredProducts.keySet());
+        notFoundProducts.removeAll(storedProductIds);
+        if (!notFoundProducts.isEmpty()) {
+            throw new ProductInShoppingCartNotInWarehouse(notFoundProducts);
+        }
+    }
+
+    private void checkProductsQuantity(Set<Product> storedProducts, Map<UUID, Long> requiredProducts) {
+        Set<UUID> deficitProducts = storedProducts.stream()
+                .filter(product -> product.getQuantity() < requiredProducts.get(product.getId()))
+                .map(Product::getId)
+                .collect(Collectors.toSet());
+        if (!deficitProducts.isEmpty()) {
+            throw new ProductInShoppingCartLowQuantityInWarehouse(deficitProducts);
+        }
     }
 }

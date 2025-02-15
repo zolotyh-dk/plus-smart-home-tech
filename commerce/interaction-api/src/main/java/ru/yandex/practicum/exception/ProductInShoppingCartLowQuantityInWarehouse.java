@@ -9,13 +9,9 @@ import java.util.UUID;
  * Ошибка, товар из корзины не находится в требуемом количестве на складе
  */
 
-public class ProductInShoppingCartLowQuantityInWarehouse extends RuntimeException {
-    private final HttpStatus httpStatus;
-    private final String userMessage;
-
+public class ProductInShoppingCartLowQuantityInWarehouse extends ErrorResponse {
     public ProductInShoppingCartLowQuantityInWarehouse(Set<UUID> productIds) {
-        super("Товары из корзины с ID " + productIds + " не находится в требуемом количестве на складе.");
-        this.httpStatus = HttpStatus.BAD_REQUEST;
-        this.userMessage = "Товары из корзины не находится в требуемом количестве на складе.";
+        super(HttpStatus.BAD_REQUEST,
+                "Товары из корзины с ID " + productIds + " не находится в требуемом количестве на складе.");
     }
 }
