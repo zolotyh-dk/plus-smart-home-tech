@@ -7,7 +7,7 @@ import ru.yandex.practicum.dto.cart.ShoppingCartDto;
 import java.util.Map;
 import java.util.UUID;
 
-public interface ShoppingCartFacade {
+public interface ShoppingCartService {
     ShoppingCartDto getShoppingCart(String username);
 
     ShoppingCartDto addProductsToCart(String username, Map<UUID, Long> products);

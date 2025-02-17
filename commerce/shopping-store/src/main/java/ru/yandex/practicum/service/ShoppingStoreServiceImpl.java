@@ -22,7 +22,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class ShoppingStoreFacadeImpl implements ShoppingStoreFacade {
+public class ShoppingStoreServiceImpl implements ShoppingStoreService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
 

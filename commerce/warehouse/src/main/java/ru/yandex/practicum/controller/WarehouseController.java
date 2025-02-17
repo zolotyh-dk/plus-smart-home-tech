@@ -21,16 +21,18 @@ public class WarehouseController implements WarehouseOperations {
 
     @Override
     public void addProduct(@Valid NewProductInWarehouseRequest request) {
-        log.info("POST /api/v1/warehouse - Добавление нового продукта на склад: {}", request);
+        log.info("POST /api/v1/warehouse - Добавление нового товара на склад: {}", request);
         warehouseService.addProduct(request);
         log.info("Успешно добавили продукт на склад.");
     }
 
     @Override
     public BookedProductsDto bookProducts(@Valid ShoppingCartDto shoppingCartDto) {
-        log.info("POST /api/v1/warehouse/check - Проверка, что товаров на складе достаточно для корзины: {}", shoppingCartDto);
+        log.info("POST /api/v1/warehouse/check - Проверка, что товаров на складе достаточно для корзины с ID: {}",
+                shoppingCartDto.shoppingCartId());
+        log.info("Корзина: {}", shoppingCartDto);
         BookedProductsDto response = warehouseService.check(shoppingCartDto);
-        log.info("Ответ: {}", response);
+        log.info("Сведения о забронированных товарах: {}", response);
         return response;
     }
 
@@ -45,7 +47,7 @@ public class WarehouseController implements WarehouseOperations {
     public AddressDto getAddress() {
         log.info("GET /api/v1/warehouse/address - Предоставить адрес склада.");
         AddressDto response = warehouseService.getAddress();
-        log.info("Ответ: {}", response);
+        log.info("Возвращаем адрес: {}", response);
         return response;
     }
 }

@@ -34,13 +34,13 @@ public class WarehouseServiceImpl implements WarehouseService {
 
     @Override
     public void addProduct(NewProductInWarehouseRequest request) {
-        log.debug("Добавляем продукт на склад: {}", request);
+        log.debug("Добавляем товар на склад: {}", request);
         if (productRepository.existsById(request.productId())) {
             throw new SpecifiedProductAlreadyInWarehouseException(request.productId());
         }
         Product product = productMapper.toProduct(request);
         Product savedProduct = productRepository.save(product);
-        log.debug("Добавили продукт на склад: {}", savedProduct);
+        log.debug("Добавили товар на склад: {}", savedProduct);
     }
 
     @Transactional(readOnly = true)

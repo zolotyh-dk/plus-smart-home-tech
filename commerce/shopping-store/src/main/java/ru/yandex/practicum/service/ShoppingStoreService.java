@@ -8,7 +8,7 @@ import ru.yandex.practicum.dto.product.SetProductQuantityStateRequest;
 import java.util.List;
 import java.util.UUID;
 
-public interface ShoppingStoreFacade {
+public interface ShoppingStoreService {
     ProductDto getProductById(UUID productId);
 
     List<ProductDto> getProducts(ProductCategory category, Pageable pageable);
