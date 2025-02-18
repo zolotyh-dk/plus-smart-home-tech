@@ -20,7 +20,6 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 @Slf4j
 public class ShoppingStoreServiceImpl implements ShoppingStoreService {
     private final ProductRepository productRepository;
@@ -48,6 +47,7 @@ public class ShoppingStoreServiceImpl implements ShoppingStoreService {
         return productMapper.toProductDto(products);
     }
 
+    @Transactional
     @Override
     public ProductDto addProduct(ProductDto productDto) {
         log.debug("Сохраняем новый товар в DB - {}", productDto);
@@ -61,6 +61,7 @@ public class ShoppingStoreServiceImpl implements ShoppingStoreService {
         return productMapper.toProductDto(product);
     }
 
+    @Transactional
     @Override
     public ProductDto updateProduct(ProductDto productDto) {
         log.debug("Обновляем товар в DB - {}", productDto);
@@ -78,6 +79,7 @@ public class ShoppingStoreServiceImpl implements ShoppingStoreService {
         return productMapper.toProductDto(product);
     }
 
+    @Transactional
     @Override
     public boolean updateQuantityState(SetProductQuantityStateRequest request) {
         log.debug("Обновляем признак количества товара в DB - {}", request);
@@ -89,6 +91,7 @@ public class ShoppingStoreServiceImpl implements ShoppingStoreService {
         return true;
     }
 
+    @Transactional
     @Override
     public boolean removeProduct(UUID productId) {
         log.debug("Получили запрос на деактивацию товара с ID - {}", productId);

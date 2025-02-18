@@ -23,13 +23,13 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 @Slf4j
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final ShoppingCartRepository shoppingCartRepository;
     private final ShoppingCartMapper shoppingCartMapper;
     private final WarehouseClient warehouseClient;
 
+    @Transactional(readOnly = true)
     @Override
     public ShoppingCartDto getShoppingCart(String username) {
         log.debug("Запрашиваем корзину пользователя: {}", username);
@@ -39,6 +39,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return shoppingCartDto;
     }
 
+    @Transactional
     @Override
     public ShoppingCartDto addProductsToCart(String username, Map<UUID, Long> products) {
         log.debug("Добавляем товары: {} в корзину пользователя: {}", products, username);
@@ -54,6 +55,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return shoppingCartDto;
     }
 
+    @Transactional
     @Override
     public void deactivateShoppingCart(String username) {
         log.debug("Деактивируем корзину пользователя: {}", username);
@@ -62,6 +64,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         log.debug("Деактивировали корзину: {}", shoppingCart);
     }
 
+    @Transactional
     @Override
     public ShoppingCartDto replaceShoppingCartContents(String username, Map<UUID, Long> products) {
         log.debug("Заменяем товары: {} в корзине пользователя: {}", products, username);
@@ -78,6 +81,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return shoppingCartDto;
     }
 
+    @Transactional
     @Override
     public ShoppingCartDto changeProductQuantity(String username, ChangeProductQuantityRequest request) {
         log.debug("Изменяем количество товаров в корзине пользователя: {} {}", username, request);
@@ -95,6 +99,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return shoppingCartDto;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public BookedProductsDto bookProducts(String username) {
         log.debug("Бронируем товары в корзине пользователя: {}", username);
