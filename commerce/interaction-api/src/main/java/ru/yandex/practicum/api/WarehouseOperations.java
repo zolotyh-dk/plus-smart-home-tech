@@ -1,4 +1,4 @@
-package ru.yandex.practicum.controller;
+package ru.yandex.practicum.api;
 
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
