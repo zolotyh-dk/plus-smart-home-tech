@@ -1,14 +1,14 @@
 logging:
   level:
-    ru.yandex.practicum: info
+    ru.yandex.practicum: debug
     root: info
-
-server:
-  port: 8081
 
 grpc:
   server:
-    port: 9090
+    port: 0
+
+server:
+  port: 0
 
 kafka:
   topic:
