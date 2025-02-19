@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 @Slf4j
 public class WarehouseServiceImpl implements WarehouseService {
     private static final String[] ADDRESSES = new String[] {"ADDRESS_1", "ADDRESS_2"};
@@ -32,6 +31,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     private final AddressMapper addressMapper;
     private final ProductRepository productRepository;
 
+    @Transactional
     @Override
     public void addProduct(NewProductInWarehouseRequest request) {
         log.debug("Добавляем товар на склад: {}", request);
@@ -56,6 +56,7 @@ public class WarehouseServiceImpl implements WarehouseService {
         return bookedProductsDto;
     }
 
+    @Transactional
     @Override
     public void increaseQuantity(AddProductToWarehouseRequest request) {
         log.debug("Увеличиваем количество товара с ID: {} на {}", request.productId(), request.quantity());

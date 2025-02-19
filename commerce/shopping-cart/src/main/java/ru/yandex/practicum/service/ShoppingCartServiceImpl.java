@@ -29,11 +29,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final ShoppingCartMapper shoppingCartMapper;
     private final WarehouseClient warehouseClient;
 
-    @Transactional(readOnly = true)
+    @Transactional
     @Override
     public ShoppingCartDto getShoppingCart(String username) {
         log.debug("Запрашиваем корзину пользователя: {}", username);
-        ShoppingCart shoppingCart = getShoppingCartByUsername(username);
+        ShoppingCart shoppingCart = findOrCreateShoppingCart(username);
         ShoppingCartDto shoppingCartDto = shoppingCartMapper.toDto(shoppingCart);
         log.debug("Возвращаем корзину пользователя {}", shoppingCartDto);
         return shoppingCartDto;
@@ -43,7 +43,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCartDto addProductsToCart(String username, Map<UUID, Long> products) {
         log.debug("Добавляем товары: {} в корзину пользователя: {}", products, username);
-        ShoppingCart shoppingCart = getShoppingCartByUsername(username);
+        ShoppingCart shoppingCart = findOrCreateShoppingCart(username);
         if (!shoppingCart.isActive()) {
             throw new ShoppingCartInactiveException(shoppingCart.getId());
         }
@@ -59,7 +59,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public void deactivateShoppingCart(String username) {
         log.debug("Деактивируем корзину пользователя: {}", username);
-        ShoppingCart shoppingCart = getShoppingCartByUsername(username);
+        ShoppingCart shoppingCart = findOrCreateShoppingCart(username);
         shoppingCart.setState(ShoppingCartState.INACTIVE);
         log.debug("Деактивировали корзину: {}", shoppingCart);
     }
@@ -68,7 +68,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCartDto replaceShoppingCartContents(String username, Map<UUID, Long> products) {
         log.debug("Заменяем товары: {} в корзине пользователя: {}", products, username);
-        ShoppingCart shoppingCart = getShoppingCartByUsername(username);
+        ShoppingCart shoppingCart = findOrCreateShoppingCart(username);
         if (!shoppingCart.isActive()) {
             throw new ShoppingCartInactiveException(shoppingCart.getId());
         }
@@ -85,7 +85,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCartDto changeProductQuantity(String username, ChangeProductQuantityRequest request) {
         log.debug("Изменяем количество товаров в корзине пользователя: {} {}", username, request);
-        ShoppingCart shoppingCart = getShoppingCartByUsername(username);
+        ShoppingCart shoppingCart = findOrCreateShoppingCart(username);
         if (!shoppingCart.isActive()) {
             throw new ShoppingCartInactiveException(shoppingCart.getId());
         }
@@ -99,11 +99,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return shoppingCartDto;
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     @Override
     public BookedProductsDto bookProducts(String username) {
         log.debug("Бронируем товары в корзине пользователя: {}", username);
-        ShoppingCart shoppingCart = getShoppingCartByUsername(username);
+        ShoppingCart shoppingCart = findOrCreateShoppingCart(username);
         if (!shoppingCart.isActive()) {
             throw new ShoppingCartInactiveException(shoppingCart.getId());
         }
@@ -113,7 +113,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return bookedProductsDto;
     }
 
-    private ShoppingCart getShoppingCartByUsername(String username) {
+    private ShoppingCart findOrCreateShoppingCart(String username) {
         if (username.isBlank()) {
             throw new NotAuthorizedUserException(username);
         }
