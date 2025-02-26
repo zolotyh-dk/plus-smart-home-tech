@@ -9,7 +9,7 @@ import java.util.UUID;
  */
 
 public class NoOrderFoundException extends ErrorResponse {
-    public NoOrderFoundException(UUID productId) {
-        super(HttpStatus.BAD_REQUEST, "О заказе с ID " + productId + " нет информации в системе.");
+    public NoOrderFoundException(UUID orderId) {
+        super(HttpStatus.BAD_REQUEST, "О заказе с ID " + orderId + " нет информации в системе.");
     }
 }
