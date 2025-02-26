@@ -3,6 +3,7 @@ package ru.yandex.practicum.dto.order;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import lombok.Builder;
 
 import java.util.Map;
 import java.util.UUID;
@@ -23,6 +24,7 @@ import java.util.UUID;
  * @param deliveryPrice Стоимость доставки
  * @param productPrice Стоимость товаров в заказе
  */
+@Builder
 public record OrderDto(
         @NotNull
         UUID orderId,

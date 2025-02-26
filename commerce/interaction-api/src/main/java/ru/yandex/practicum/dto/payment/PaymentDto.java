@@ -1,5 +1,7 @@
 package ru.yandex.practicum.dto.payment;
 
+import lombok.Builder;
+
 import java.util.UUID;
 
 /**
@@ -10,6 +12,7 @@ import java.util.UUID;
  * @param deliveryTotal Стоимость доставки
  * @param feeTotal Стоимость налога
  */
+@Builder
 public record PaymentDto (
         UUID paymentId,
         Double totalPayment,
