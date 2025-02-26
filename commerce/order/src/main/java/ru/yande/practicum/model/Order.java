@@ -6,8 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import ru.yandex.practicum.dto.order.OrderState;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Entity
@@ -22,11 +21,11 @@ public class Order {
     @Column(name = "shopping_cart_id")
     private UUID shoppingCartId;
 
-    @OneToMany(mappedBy = "order",
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    private List<OrderProduct> products;
+    @ElementCollection
+    @CollectionTable(name = "order_products", joinColumns = @JoinColumn(name = "order_id"))
+    @MapKeyColumn(name = "product_id")
+    @Column(name = "quantity")
+    private Map<UUID, Long> products;
 
     @Column(name = "payment_id")
     private UUID paymentId;
@@ -58,6 +57,5 @@ public class Order {
 
     public Order() {
         id = UUID.randomUUID();
-        products = new ArrayList<>();
     }
 }
