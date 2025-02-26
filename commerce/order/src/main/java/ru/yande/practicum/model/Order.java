@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import ru.yandex.practicum.dto.order.OrderState;
 
+import java.math.BigDecimal;
 import java.util.Map;
 import java.util.UUID;
 
@@ -24,7 +25,7 @@ public class Order {
     @ElementCollection
     @CollectionTable(name = "order_products", joinColumns = @JoinColumn(name = "order_id"))
     @MapKeyColumn(name = "product_id")
-    @Column(name = "quantity")
+    @Column(name = "quantity", nullable = false)
     private Map<UUID, Long> products;
 
     @Column(name = "payment_id")
@@ -46,14 +47,14 @@ public class Order {
     @Column(name = "fragile")
     private Boolean fragile;
 
-    @Column(name = "totlal_price")
-    private Double totalPrice;
+    @Column(name = "total_price")
+    private BigDecimal totalPrice;
 
     @Column(name = "delivery_price")
-    private Double deliveryPrice;
+    private BigDecimal deliveryPrice;
 
     @Column(name = "product_price")
-    private Double productPrice;
+    private BigDecimal productPrice;
 
     public Order() {
         id = UUID.randomUUID();
