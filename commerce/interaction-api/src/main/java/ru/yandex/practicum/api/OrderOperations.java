@@ -1,5 +1,6 @@
 package ru.yandex.practicum.api;
 
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.dto.order.CreateNewOrderRequest;
 import ru.yandex.practicum.dto.order.OrderDto;
@@ -28,7 +29,7 @@ public interface OrderOperations {
      * @return Оформленный заказ пользователя
      */
     @PutMapping
-    OrderDto addOrder(@RequestBody CreateNewOrderRequest request);
+    OrderDto addOrder(@RequestBody @Valid CreateNewOrderRequest request);
 
     /**
      * Возврат заказа
@@ -37,7 +38,7 @@ public interface OrderOperations {
      * @return Заказ пользователя после сборки
      */
     @PostMapping("/return")
-    OrderDto returnOrder(@RequestBody ProductReturnRequest request);
+    OrderDto returnOrder(@RequestBody @Valid ProductReturnRequest request);
 
     /**
      * Оплата заказа
