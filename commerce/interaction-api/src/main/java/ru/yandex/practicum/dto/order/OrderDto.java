@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Builder;
 
+import java.math.BigDecimal;
 import java.util.Map;
 import java.util.UUID;
 
@@ -47,10 +48,10 @@ public record OrderDto(
 
         Boolean fragile,
 
-        Double totalPrice,
+        BigDecimal totalPrice,
 
-        Double deliveryPrice,
+        BigDecimal deliveryPrice,
 
-        Double productPrice
+        BigDecimal productPrice
 ) {
 }
