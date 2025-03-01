@@ -4,15 +4,16 @@ import ru.yandex.practicum.dto.delivery.DeliveryDto;
 import ru.yandex.practicum.dto.order.OrderDto;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 public interface DeliveryService {
     DeliveryDto createDelivery(DeliveryDto deliveryDto);
 
-    void successDelivery();
+    void successDelivery(UUID orderId);
 
-    void pickedDelivery();
+    void pickedDelivery(UUID orderId);
 
-    void failedDelivery();
+    void failedDelivery(UUID orderId);
 
     BigDecimal calculateCost(OrderDto orderDto);
 }

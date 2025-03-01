@@ -9,7 +9,7 @@ import java.util.UUID;
  */
 
 public class NoDeliveryFoundException extends ErrorResponse {
-    public NoDeliveryFoundException(UUID deliveryId) {
-        super(HttpStatus.BAD_REQUEST, "О доставке с ID " + deliveryId + " нет информации в системе.");
+    public NoDeliveryFoundException(UUID orderId) {
+        super(HttpStatus.BAD_REQUEST, "О доставке для заказа с ID " + orderId + " нет информации в системе.");
     }
 }

@@ -11,10 +11,17 @@ import java.util.UUID;
 @FeignClient(name = "order")
 public interface OrderClient extends OrderOperations {
     @Override
-    @PostMapping("api/v1/payment")
+    @PostMapping("api/v1/order/payment")
     OrderDto orderPayment(@RequestBody UUID orderId);
 
     @Override
-    @PostMapping("api/v1/payment/failed")
+    @PostMapping("api/v1/order/payment/failed")
     OrderDto orderPaymentFailed(@RequestBody UUID orderId);
+
+    @Override
+    @PostMapping("api/v1/order/delivery")
+    OrderDto orderDelivery(@RequestBody UUID orderId);
+
+    @PostMapping("api/v1/order//delivery/failed")
+    OrderDto orderDeliveryFailed(@RequestBody UUID orderId);
 }

@@ -58,7 +58,7 @@ public class OrderController implements OrderOperations {
     @Override
     public OrderDto orderPaymentFailed(UUID orderId) {
         log.info("POST /api/v1/order/payment - Оплата заказа с ID: {}", orderId);
-        OrderDto order = orderService.orderPayment(orderId);
+        OrderDto order = orderService.orderPaymentFailed(orderId);
         log.info("Возвращаем оплаченный заказ c ID: {}", order.orderId());
         return order;
     }

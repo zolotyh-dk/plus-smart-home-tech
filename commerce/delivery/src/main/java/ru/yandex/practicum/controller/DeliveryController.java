@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.api.DeliveryOperations;
 import ru.yandex.practicum.dto.delivery.DeliveryDto;
 import ru.yandex.practicum.dto.order.OrderDto;
-import ru.yandex.practicum.dto.payment.PaymentDto;
 import ru.yandex.practicum.service.DeliveryService;
 
 import java.math.BigDecimal;
@@ -31,21 +30,21 @@ public class DeliveryController implements DeliveryOperations {
     @Override
     public void successDelivery(UUID orderId) {
         log.info("POST /api/v1/delivery/successful - Эмуляция успешной доставки заказа с ID: {}", orderId);
-        deliveryService.successDelivery();
+        deliveryService.successDelivery(orderId);
         log.info("Эмулировали успешную доставку заказа с ID: {}", orderId);
     }
 
     @Override
     public void pickedDelivery(UUID orderId) {
         log.info("POST /api/v1/delivery/picked - Эмуляция получения доставки заказа с ID: {}", orderId);
-        deliveryService.pickedDelivery();
+        deliveryService.pickedDelivery(orderId);
         log.info("Эмулировали получение доставки заказа с ID: {}", orderId);
     }
 
     @Override
     public void failedDelivery(UUID orderId) {
         log.info("POST /api/v1/delivery/failed - Эмуляция неудачного вручения доставки заказа с ID: {}", orderId);
-        deliveryService.failedDelivery();
+        deliveryService.failedDelivery(orderId);
         log.info("Эмулировали неудачное вручение доставки заказа с ID: {}", orderId);
     }
 
