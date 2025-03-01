@@ -38,7 +38,7 @@ public class PaymentController implements PaymentOperations {
     @Override
     public void confirmPayment(UUID paymentId) {
         log.info("POST /api/v1/payment/refund - Эмуляция успешной оплаты с ID: {}", paymentId);
-        paymentService.confirmPayment();
+        paymentService.confirmPayment(paymentId);
         log.info("Эмулировали успешную оплату с ID: {}", paymentId);
     }
 
@@ -53,7 +53,7 @@ public class PaymentController implements PaymentOperations {
     @Override
     public void failPayment(UUID paymentId) {
         log.info("POST /api/v1/payment/failed - Эмуляция отказа в оплате с ID: {}", paymentId);
-        paymentService.failPayment();
+        paymentService.failPayment(paymentId);
         log.info("Эмулировали отказ в оплате с ID: {}", paymentId);
     }
 }
