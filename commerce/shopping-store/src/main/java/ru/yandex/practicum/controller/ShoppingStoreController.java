@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Slf4j
 @RestController
-@RequestMapping("api/v1/shopping-store")
+@RequestMapping("/api/v1/shopping-store")
 @RequiredArgsConstructor
 public class ShoppingStoreController implements ShoppingStoreOperations {
     private final ShoppingStoreService shoppingStoreService;

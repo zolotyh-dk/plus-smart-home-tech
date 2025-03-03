@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Entity
-@Table(schema = "order", name = "orders")
+@Table(schema = "orders", name = "orders")
 @EqualsAndHashCode(of = "id")
 @Getter
 @Setter

@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Slf4j
 @RestController
-@RequestMapping("api/v1/warehouse")
+@RequestMapping("/api/v1/warehouse")
 @RequiredArgsConstructor
 public class WarehouseController implements WarehouseOperations {
     private final WarehouseService warehouseService;

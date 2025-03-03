@@ -8,7 +8,7 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:
       hibernate:
-        default_schema: store
+        default_schema: payment
 
 logging:
   level:
