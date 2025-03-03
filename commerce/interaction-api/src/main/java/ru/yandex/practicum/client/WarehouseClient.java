@@ -8,6 +8,9 @@ import ru.yandex.practicum.dto.cart.BookedProductsDto;
 import ru.yandex.practicum.dto.cart.ShoppingCartDto;
 import ru.yandex.practicum.dto.warehouse.ShippedToDeliveryRequest;
 
+import java.util.Map;
+import java.util.UUID;
+
 @FeignClient(name = "warehouse")
 public interface WarehouseClient extends WarehouseOperations {
     @Override
@@ -15,6 +18,9 @@ public interface WarehouseClient extends WarehouseOperations {
     BookedProductsDto bookProducts(ShoppingCartDto shoppingCartDto);
 
     @Override
-    @PostMapping("/api/v1/warehouse//shipped")
+    @PostMapping("/api/v1/warehouse/shipped")
     void shipToDelivery(@RequestBody ShippedToDeliveryRequest request);
+
+    @PostMapping("/api/v1/warehouse/return")
+    void returnProductsToWarehouse(@RequestBody Map<UUID, Long> products);
 }

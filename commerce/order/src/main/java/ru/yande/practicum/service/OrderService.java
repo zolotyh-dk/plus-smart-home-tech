@@ -10,7 +10,7 @@ import java.util.UUID;
 public interface OrderService {
     List<OrderDto> getOrders(String username);
 
-    OrderDto addOrder(CreateNewOrderRequest request);
+    OrderDto addOrder(String username, CreateNewOrderRequest request);
 
     OrderDto returnOrder(ProductReturnRequest request);
 
@@ -18,7 +18,7 @@ public interface OrderService {
 
     OrderDto orderPaymentFailed(UUID orderId);
 
-    OrderDto orderDelivery(UUID orderId);
+    OrderDto orderDelivered(UUID orderId);
 
     OrderDto orderDeliveryFailed(UUID orderId);
 

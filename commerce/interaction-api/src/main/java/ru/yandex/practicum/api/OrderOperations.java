@@ -29,7 +29,7 @@ public interface OrderOperations {
      * @return Оформленный заказ пользователя
      */
     @PutMapping
-    OrderDto addOrder(@RequestBody @Valid CreateNewOrderRequest request);
+    OrderDto addOrder(@RequestParam String username, @RequestBody @Valid CreateNewOrderRequest request);
 
     /**
      * Возврат заказа
@@ -65,7 +65,7 @@ public interface OrderOperations {
      * @return Заказ пользователя после доставки
      */
     @PostMapping("/delivery")
-    OrderDto orderDelivery(@RequestBody UUID orderId);
+    OrderDto orderDelived(@RequestBody UUID orderId);
 
     /**
      * Доставка заказа произошла с ошибкой

@@ -22,6 +22,9 @@ public class Order {
     @Column(name = "shopping_cart_id")
     private UUID shoppingCartId;
 
+    @Column(name = "username", nullable = false)
+    private String username;
+
     @ElementCollection
     @CollectionTable(name = "order_products", joinColumns = @JoinColumn(name = "order_id"))
     @MapKeyColumn(name = "product_id")
@@ -36,7 +39,7 @@ public class Order {
 
     @Column(name = "state", nullable = false)
     @Enumerated(EnumType.STRING)
-    private OrderState state;
+    private OrderState state = OrderState.NEW;
 
     @Column(name = "delivery_weight")
     private Double deliveryWeight;

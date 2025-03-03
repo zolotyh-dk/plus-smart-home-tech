@@ -32,9 +32,9 @@ public class OrderController implements OrderOperations {
     }
 
     @Override
-    public OrderDto addOrder(CreateNewOrderRequest request) {
+    public OrderDto addOrder(String username, CreateNewOrderRequest request) {
         log.info("PUT /api/v1/order - Создание заказа: {}", request);
-        OrderDto order = orderService.addOrder(request);
+        OrderDto order = orderService.addOrder(username, request);
         log.info("Возвращаем созданный заказ c ID: {}", order.orderId());
         return order;
     }
@@ -57,16 +57,16 @@ public class OrderController implements OrderOperations {
 
     @Override
     public OrderDto orderPaymentFailed(UUID orderId) {
-        log.info("POST /api/v1/order/payment - Оплата заказа с ID: {}", orderId);
+        log.info("POST /api/v1/order/payment/failed - Оплата заказа с ID: {} произошла с ошибкой", orderId);
         OrderDto order = orderService.orderPaymentFailed(orderId);
-        log.info("Возвращаем оплаченный заказ c ID: {}", order.orderId());
+        log.info("Возвращаем оплаченный с ошибкой заказ. ID: {}", order.orderId());
         return order;
     }
 
     @Override
-    public OrderDto orderDelivery(UUID orderId) {
+    public OrderDto orderDelived(UUID orderId) {
         log.info("POST /api/v1/order/delivery - Доставка заказа с ID: {}", orderId);
-        OrderDto order = orderService.orderDelivery(orderId);
+        OrderDto order = orderService.orderDelivered(orderId);
         log.info("Возвращаем доставленный заказ c ID: {}", order.orderId());
         return order;
     }
