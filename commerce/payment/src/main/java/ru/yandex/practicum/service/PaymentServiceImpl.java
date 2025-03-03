@@ -96,6 +96,7 @@ public class PaymentServiceImpl implements PaymentService {
         return productsCost;
     }
 
+    @Transactional
     @Override
     public void failPayment(UUID paymentId) {
         log.debug("Устанавливаем признак отказа в оплате с ID: {}", paymentId);
