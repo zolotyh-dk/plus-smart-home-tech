@@ -4,13 +4,16 @@ import org.springframework.stereotype.Component;
 import ru.yande.practicum.model.Order;
 import ru.yandex.practicum.dto.order.CreateNewOrderRequest;
 import ru.yandex.practicum.dto.order.OrderDto;
+import ru.yandex.practicum.dto.warehouse.AssemblyProductsForOrderRequest;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @Component
 public class OrderMapper {
-    public OrderDto toDto(Order order) {
+    public OrderDto toOrderDto(Order order) {
         if (order == null) {
             return null;
         }
@@ -30,11 +33,11 @@ public class OrderMapper {
                 .build();
     }
 
-    public List<OrderDto> toDto(List<Order> orders) {
+    public List<OrderDto> toOrderDto(List<Order> orders) {
         if (orders == null || orders.isEmpty()) {
             return Collections.emptyList();
         }
-        return orders.stream().map(this::toDto).toList();
+        return orders.stream().map(this::toOrderDto).toList();
     }
 
     public Order toOrder(String username, CreateNewOrderRequest request) {
@@ -43,5 +46,12 @@ public class OrderMapper {
         order.setUsername(username);
         order.setProducts(request.shoppingCart().products());
         return order;
+    }
+
+    public AssemblyProductsForOrderRequest toAssemblyRequest(UUID orderId, Map<UUID, Long> products) {
+        return AssemblyProductsForOrderRequest.builder()
+                .orderId(orderId)
+                .products(products)
+                .build();
     }
 }

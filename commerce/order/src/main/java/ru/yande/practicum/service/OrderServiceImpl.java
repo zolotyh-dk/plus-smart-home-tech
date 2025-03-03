@@ -10,10 +10,12 @@ import ru.yande.practicum.repository.OrderRepository;
 import ru.yandex.practicum.client.DeliveryClient;
 import ru.yandex.practicum.client.PaymentClient;
 import ru.yandex.practicum.client.WarehouseClient;
+import ru.yandex.practicum.dto.cart.BookedProductsDto;
 import ru.yandex.practicum.dto.order.CreateNewOrderRequest;
 import ru.yandex.practicum.dto.order.OrderDto;
 import ru.yandex.practicum.dto.order.OrderState;
 import ru.yandex.practicum.dto.order.ProductReturnRequest;
+import ru.yandex.practicum.dto.warehouse.AssemblyProductsForOrderRequest;
 import ru.yandex.practicum.exception.NoOrderFoundException;
 import ru.yandex.practicum.exception.NotAuthorizedUserException;
 
@@ -38,7 +40,7 @@ public class OrderServiceImpl implements OrderService {
         if (username.isEmpty()) {
             throw new NotAuthorizedUserException(username);
         }
-        List<OrderDto> orderDtos = orderMapper.toDto(orderRepository.findAllByUsername(username));
+        List<OrderDto> orderDtos = orderMapper.toOrderDto(orderRepository.findAllByUsername(username));
         log.debug("Получили из DB {} заказов пользователя {}", orderDtos.size(), username);
         return orderDtos;
     }
@@ -52,9 +54,15 @@ public class OrderServiceImpl implements OrderService {
             throw new NotAuthorizedUserException(username);
         }
         Order order = orderMapper.toOrder(username, request);
+        AssemblyProductsForOrderRequest assemblyRequest =
+                orderMapper.toAssemblyRequest(order.getId(), request.shoppingCart().products());
+        BookedProductsDto bookedProducts = warehouseClient.assemblyProducts(assemblyRequest);
+        order.setDeliveryWeight(bookedProducts.deliveryWeight());
+        order.setDeliveryVolume(bookedProducts.deliveryVolume());
+        order.setFragile(bookedProducts.fragile());
         order = orderRepository.save(order);
         log.debug("Сохранили в DB новый заказ: {}", order);
-        return orderMapper.toDto(order);
+        return orderMapper.toOrderDto(order);
     }
 
     @Transactional
@@ -67,7 +75,7 @@ public class OrderServiceImpl implements OrderService {
         warehouseClient.returnProductsToWarehouse(request.products());
         log.debug("Обработали возврат товаров по заказу c ID: {}. Корзина ID: {}. Статус заказа: {}",
                 order.getId(), order.getShoppingCartId(), order.getState());
-        return orderMapper.toDto(order);
+        return orderMapper.toOrderDto(order);
     }
 
     @Transactional
@@ -79,7 +87,7 @@ public class OrderServiceImpl implements OrderService {
         order.setState(OrderState.PAID);
         log.debug("Обработали успешную оплату заказа c ID: {}. Корзина ID: {}. Статус заказа: {}",
                 order.getId(), order.getShoppingCartId(), order.getState());
-        return orderMapper.toDto(order);
+        return orderMapper.toOrderDto(order);
     }
 
     @Transactional
@@ -91,7 +99,7 @@ public class OrderServiceImpl implements OrderService {
         order.setState(OrderState.PAYMENT_FAILED);
         log.debug("Обработали ошибку оплаты заказа c ID: {}. Корзина ID: {}. Статус заказа: {}",
                 order.getId(), order.getShoppingCartId(), order.getState());
-        return orderMapper.toDto(order);
+        return orderMapper.toOrderDto(order);
     }
 
     @Transactional
@@ -103,7 +111,7 @@ public class OrderServiceImpl implements OrderService {
         order.setState(OrderState.DELIVERED);
         log.debug("Обработали успешную доставку заказа c ID: {}. Корзина ID: {}. Статус заказа: {}",
                 order.getId(), order.getShoppingCartId(), order.getState());
-        return orderMapper.toDto(order);
+        return orderMapper.toOrderDto(order);
     }
 
     @Transactional
@@ -115,7 +123,7 @@ public class OrderServiceImpl implements OrderService {
         order.setState(OrderState.DELIVERY_FAILED);
         log.debug("Обработали ошибку при доставке заказа c ID: {}. Корзина ID: {}. Статус заказа: {}",
                 order.getId(), order.getShoppingCartId(), order.getState());
-        return orderMapper.toDto(order);
+        return orderMapper.toOrderDto(order);
     }
 
     @Transactional
@@ -127,7 +135,7 @@ public class OrderServiceImpl implements OrderService {
         order.setState(OrderState.COMPLETED);
         log.debug("Обработали завершение заказа c ID: {}. Корзина ID: {}. Статус заказа: {}",
                 order.getId(), order.getShoppingCartId(), order.getState());
-        return orderMapper.toDto(order);
+        return orderMapper.toOrderDto(order);
     }
 
     @Transactional
@@ -136,11 +144,11 @@ public class OrderServiceImpl implements OrderService {
         log.debug("Рассчитываем полную стоимость заказа с ID: {}", orderId);
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new NoOrderFoundException(orderId));
-        BigDecimal totalPrice = paymentClient.calculateTotalCost(orderMapper.toDto(order));
+        BigDecimal totalPrice = paymentClient.calculateTotalCost(orderMapper.toOrderDto(order));
         order.setTotalPrice(totalPrice);
         log.debug("Рассчитали полную стоимость заказа c ID: {}. Корзина ID: {}. Полная стоимость: {}",
                 order.getId(), order.getShoppingCartId(), order.getTotalPrice());
-        return orderMapper.toDto(order);
+        return orderMapper.toOrderDto(order);
     }
 
     @Transactional
@@ -149,11 +157,11 @@ public class OrderServiceImpl implements OrderService {
         log.debug("Рассчитываем стоимость доставки заказа с ID: {}", orderId);
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new NoOrderFoundException(orderId));
-        BigDecimal deliveryPrice = deliveryClient.calculateCost(orderMapper.toDto(order));
+        BigDecimal deliveryPrice = deliveryClient.calculateCost(orderMapper.toOrderDto(order));
         order.setDeliveryPrice(deliveryPrice);
         log.debug("Рассчитали стоимость доставки заказа c ID: {}. Корзина ID: {}. Стоимость доставки: {}",
                 order.getId(), order.getShoppingCartId(), order.getDeliveryPrice());
-        return orderMapper.toDto(order);
+        return orderMapper.toOrderDto(order);
     }
 
     @Transactional
@@ -165,7 +173,7 @@ public class OrderServiceImpl implements OrderService {
         order.setState(OrderState.ASSEMBLED);
         log.debug("Обработали успешное завершение сборки заказа c ID: {}. Корзина ID: {}. Статус заказа: {}",
                 order.getId(), order.getShoppingCartId(), order.getState());
-        return orderMapper.toDto(order);
+        return orderMapper.toOrderDto(order);
     }
 
     @Transactional
@@ -177,6 +185,6 @@ public class OrderServiceImpl implements OrderService {
         order.setState(OrderState.ASSEMBLY_FAILED);
         log.debug("Обработали ошибку сборки заказа c ID: {}. Корзина ID: {}. Статус заказа: {}",
                 order.getId(), order.getShoppingCartId(), order.getState());
-        return orderMapper.toDto(order);
+        return orderMapper.toOrderDto(order);
     }
 }

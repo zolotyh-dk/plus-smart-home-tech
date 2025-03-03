@@ -26,6 +26,7 @@ import java.util.UUID;
 public class PaymentServiceImpl implements PaymentService {
     private static final BigDecimal FEE = BigDecimal.valueOf(0.1);
     private static final int PRICE_SCALE = 2;
+
     private final ShoppingStoreClient shoppingStoreClient;
     private final OrderClient orderClient;
     private final PaymentRepository paymentRepository;

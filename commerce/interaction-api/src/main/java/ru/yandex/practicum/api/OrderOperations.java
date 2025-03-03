@@ -65,7 +65,7 @@ public interface OrderOperations {
      * @return Заказ пользователя после доставки
      */
     @PostMapping("/delivery")
-    OrderDto orderDelived(@RequestBody UUID orderId);
+    OrderDto orderDelivered(@RequestBody UUID orderId);
 
     /**
      * Доставка заказа произошла с ошибкой
