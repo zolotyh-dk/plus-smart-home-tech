@@ -55,16 +55,23 @@ public class WarehouseController implements WarehouseOperations {
 
     @Override
     public void shipToDelivery(ShippedToDeliveryRequest request) {
-
+        log.info("POST /api/v1/warehouse/shipped - Передать товары в доставку: {}", request);
+        warehouseService.shipToDelivery(request);
+        log.info("Передали товары в доставку: {}", request);
     }
 
     @Override
     public void returnProductsToWarehouse(Map<UUID, Long> products) {
-
+        log.info("POST /api/v1/warehouse/return - Принять возврат товаров на склад: {}", products);
+        warehouseService.returnProductsToWarehouse(products);
+        log.info("Приняли товары на склад: {}", products);
     }
 
     @Override
     public BookedProductsDto assemblyProducts(AssemblyProductsForOrderRequest request) {
-        return null;
+        log.info("POST /api/v1/warehouse/assembly - Собрать товары к заказу ID: {}", request.orderId());
+        BookedProductsDto response = warehouseService.assemblyProducts(request);
+        log.info("Собрали товары к доставке: {}", response);
+        return response;
     }
 }

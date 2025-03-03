@@ -6,9 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.dto.cart.BookedProductsDto;
 import ru.yandex.practicum.dto.cart.ShoppingCartDto;
-import ru.yandex.practicum.dto.warehouse.AddProductToWarehouseRequest;
-import ru.yandex.practicum.dto.warehouse.AddressDto;
-import ru.yandex.practicum.dto.warehouse.NewProductInWarehouseRequest;
+import ru.yandex.practicum.dto.warehouse.*;
 import ru.yandex.practicum.exception.NoSpecifiedProductInWarehouseException;
 import ru.yandex.practicum.exception.ProductInShoppingCartLowQuantityInWarehouse;
 import ru.yandex.practicum.exception.ProductInShoppingCartNotInWarehouse;
@@ -73,6 +71,21 @@ public class WarehouseServiceImpl implements WarehouseService {
         AddressDto addressDto = addressMapper.toDto(address);
         log.debug("Адрес склада: {}", addressDto);
         return addressDto;
+    }
+
+    @Override
+    public void shipToDelivery(ShippedToDeliveryRequest request) {
+
+    }
+
+    @Override
+    public void returnProductsToWarehouse(Map<UUID, Long> products) {
+
+    }
+
+    @Override
+    public BookedProductsDto assemblyProducts(AssemblyProductsForOrderRequest request) {
+        return null;
     }
 
     private void checkAllProductsExists(Set<Product> storedProducts, Map<UUID, Long> requiredProducts) {
