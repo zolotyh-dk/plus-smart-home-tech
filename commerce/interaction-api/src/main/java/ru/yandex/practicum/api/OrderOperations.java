@@ -104,13 +104,13 @@ public interface OrderOperations {
     OrderDto calculateDeliveryPrice(@RequestBody UUID orderId);
 
     /**
-     * Сборка заказа
+     * Сборка заказа завершена
      *
      * @param orderId Идентификатор заказа
      * @return Заказ пользователя после сборки
      */
     @PostMapping("/assembly")
-    OrderDto orderAssembly(@RequestBody UUID orderId);
+    OrderDto orderAssemblyCompleted(@RequestBody UUID orderId);
 
     /**
      * Сборка заказа произошла с ошибкой

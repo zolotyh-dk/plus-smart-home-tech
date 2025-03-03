@@ -28,7 +28,7 @@ public interface OrderService {
 
     OrderDto calculateDeliveryPrice(UUID orderId);
 
-    OrderDto orderAssembly(UUID orderId);
+    OrderDto orderAssemblyCompleted(UUID orderId);
 
     OrderDto orderAssemblyFailed(UUID orderId);
 }

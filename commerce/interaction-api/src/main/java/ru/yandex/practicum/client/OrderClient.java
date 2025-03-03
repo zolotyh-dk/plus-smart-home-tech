@@ -22,6 +22,11 @@ public interface OrderClient extends OrderOperations {
     @PostMapping("api/v1/order/delivery")
     OrderDto orderDelivery(@RequestBody UUID orderId);
 
-    @PostMapping("api/v1/order//delivery/failed")
+    @Override
+    @PostMapping("api/v1/order/delivery/failed")
     OrderDto orderDeliveryFailed(@RequestBody UUID orderId);
+
+    @Override
+    @PostMapping("api/v1/order/assembly")
+    OrderDto orderAssemblyCompleted(@RequestBody UUID orderId);
 }

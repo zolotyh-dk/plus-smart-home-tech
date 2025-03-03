@@ -104,9 +104,9 @@ public class OrderController implements OrderOperations {
     }
 
     @Override
-    public OrderDto orderAssembly(UUID orderId) {
-        log.info("POST /api/v1/order/assembly - Сборка заказа с ID: {}", orderId);
-        OrderDto order = orderService.orderAssembly(orderId);
+    public OrderDto orderAssemblyCompleted(UUID orderId) {
+        log.info("POST /api/v1/order/assembly - Сборка заказа с ID: {} завершена", orderId);
+        OrderDto order = orderService.orderAssemblyCompleted(orderId);
         log.info("Возвращаем заказ после сборки, ID: {}", order.orderId());
         return order;
     }

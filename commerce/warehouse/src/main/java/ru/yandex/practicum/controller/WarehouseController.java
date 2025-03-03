@@ -8,10 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.api.WarehouseOperations;
 import ru.yandex.practicum.dto.cart.BookedProductsDto;
 import ru.yandex.practicum.dto.cart.ShoppingCartDto;
-import ru.yandex.practicum.dto.warehouse.AddProductToWarehouseRequest;
-import ru.yandex.practicum.dto.warehouse.AddressDto;
-import ru.yandex.practicum.dto.warehouse.NewProductInWarehouseRequest;
+import ru.yandex.practicum.dto.warehouse.*;
 import ru.yandex.practicum.service.WarehouseService;
+
+import java.util.Map;
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -50,5 +51,20 @@ public class WarehouseController implements WarehouseOperations {
         AddressDto response = warehouseService.getAddress();
         log.info("Возвращаем адрес: {}", response);
         return response;
+    }
+
+    @Override
+    public void shipToDelivery(ShippedToDeliveryRequest request) {
+
+    }
+
+    @Override
+    public void returnProductsToWarehouse(Map<UUID, Long> products) {
+
+    }
+
+    @Override
+    public BookedProductsDto assemblyProducts(AssemblyProductsForOrderRequest request) {
+        return null;
     }
 }

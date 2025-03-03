@@ -50,8 +50,14 @@ public class DeliveryServiceImpl implements DeliveryService {
         log.debug("Установили признак успешной доставки. ID доставки: {}. ID заказа: {}", delivery.getId(), orderId);
     }
 
+    @Transactional
     @Override
     public void pickedDelivery(UUID orderId) {
+        log.debug("Принимаем заказ с ID: {} в доставку", orderId);
+        Delivery delivery = deliveryRepository.findByOrderId(orderId)
+                .orElseThrow(() -> new NoDeliveryFoundException(orderId));
+        delivery.setState(DeliveryState.IN_PROGRESS);
+        orderClient.orderAssemblyCompleted(orderId);
 
     }
 
