@@ -64,7 +64,7 @@ public class OrderController implements OrderOperations {
     }
 
     @Override
-    public OrderDto orderDelived(UUID orderId) {
+    public OrderDto orderDelivered(UUID orderId) {
         log.info("POST /api/v1/order/delivery - Доставка заказа с ID: {}", orderId);
         OrderDto order = orderService.orderDelivered(orderId);
         log.info("Возвращаем доставленный заказ c ID: {}", order.orderId());

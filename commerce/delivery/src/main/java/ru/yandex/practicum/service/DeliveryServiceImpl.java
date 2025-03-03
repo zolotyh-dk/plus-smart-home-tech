@@ -53,7 +53,7 @@ public class DeliveryServiceImpl implements DeliveryService {
         Delivery delivery = deliveryRepository.findByOrderId(orderId)
                 .orElseThrow(() -> new NoDeliveryFoundException(orderId));
         delivery.setState(DeliveryState.DELIVERED);
-        orderClient.orderDelived(orderId);
+        orderClient.orderDelivered(orderId);
         log.debug("Установили признак успешной доставки. ID доставки: {}. ID заказа: {}", delivery.getId(), orderId);
     }
 
