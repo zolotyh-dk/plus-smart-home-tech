@@ -35,9 +35,9 @@ public class DeliveryController implements DeliveryOperations {
     }
 
     @Override
-    public void pickedDelivery(UUID orderId) {
+    public void pickDelivery(UUID orderId) {
         log.info("POST /api/v1/delivery/picked - Эмуляция получения доставки заказа с ID: {}", orderId);
-        deliveryService.pickedDelivery(orderId);
+        deliveryService.pickDelivery(orderId);
         log.info("Эмулировали получение доставки заказа с ID: {}", orderId);
     }
 

@@ -35,7 +35,7 @@ public interface DeliveryOperations {
      * @param orderId Идентификатор заказа
      */
     @PostMapping("/picked")
-    void pickedDelivery(@RequestBody @NotNull UUID orderId);
+    void pickDelivery(@RequestBody @NotNull UUID orderId);
 
     /**
      * Эмуляция неудачного вручения товара
