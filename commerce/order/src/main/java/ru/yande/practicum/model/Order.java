@@ -26,7 +26,9 @@ public class Order {
     private String username;
 
     @ElementCollection
-    @CollectionTable(name = "order_products", joinColumns = @JoinColumn(name = "order_id"))
+    @CollectionTable(schema = "order",
+            name = "order_products",
+            joinColumns = @JoinColumn(name = "order_id"))
     @MapKeyColumn(name = "product_id")
     @Column(name = "quantity", nullable = false)
     private Map<UUID, Long> products;

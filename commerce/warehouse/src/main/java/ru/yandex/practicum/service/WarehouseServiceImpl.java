@@ -7,13 +7,12 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.dto.cart.BookedProductsDto;
 import ru.yandex.practicum.dto.cart.ShoppingCartDto;
 import ru.yandex.practicum.dto.warehouse.*;
-import ru.yandex.practicum.exception.NoSpecifiedProductInWarehouseException;
-import ru.yandex.practicum.exception.ProductInShoppingCartLowQuantityInWarehouse;
-import ru.yandex.practicum.exception.ProductInShoppingCartNotInWarehouse;
-import ru.yandex.practicum.exception.SpecifiedProductAlreadyInWarehouseException;
+import ru.yandex.practicum.exception.*;
 import ru.yandex.practicum.mapper.AddressMapper;
 import ru.yandex.practicum.mapper.ProductMapper;
+import ru.yandex.practicum.model.Booking;
 import ru.yandex.practicum.model.Product;
+import ru.yandex.practicum.repository.BookingRepository;
 import ru.yandex.practicum.repository.ProductRepository;
 
 import java.security.SecureRandom;
@@ -28,6 +27,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     private final ProductMapper productMapper;
     private final AddressMapper addressMapper;
     private final ProductRepository productRepository;
+    private final BookingRepository bookingRepository;
 
     @Transactional
     @Override
@@ -73,19 +73,51 @@ public class WarehouseServiceImpl implements WarehouseService {
         return addressDto;
     }
 
+    @Transactional
     @Override
     public void shipToDelivery(ShippedToDeliveryRequest request) {
-
+        log.debug("Обрабатываем прием заказа с ID: {} в доставку c ID: {}",
+                request.orderId(), request.deliveryId());
+        Booking booking = bookingRepository.findByOrderId(request.orderId())
+                .orElseThrow(() -> new NoBookingFoundException(request.orderId()));
+        booking.setDeliveryId(request.deliveryId());
+        log.debug("Товары по брони с ID: {} переданы в доставку. ID заказа: {}. ID доставки: {}",
+                booking.getId(), request.orderId(), request.deliveryId());
     }
 
+    @Transactional
     @Override
     public void returnProductsToWarehouse(Map<UUID, Long> products) {
-
+        log.debug("Возвращаем товары на склад: {}", products);
+        Set<Product> storedProducts = productRepository.findAllByIdIn(products.keySet());
+        checkAllProductsExists(storedProducts, products);
+        storedProducts.forEach(product -> {
+            UUID id = product.getId();
+            product.setQuantity(product.getQuantity() + products.get(id));
+            log.trace("Увеличили на складе количество товара ID: {}, новое количество: {}", id, product.getQuantity());
+        });
     }
 
     @Override
     public BookedProductsDto assemblyProducts(AssemblyProductsForOrderRequest request) {
-        return null;
+        log.debug("Бронируем и собираем товары к заказу: {}. Количество позиций: {}",
+                request.orderId(), request.products().size());
+        Map<UUID, Long> requiredProducts = request.products();
+        Set<Product> storedProducts = productRepository.findAllByIdIn(requiredProducts.keySet());
+        checkAllProductsExists(storedProducts, requiredProducts);
+        checkProductsQuantity(storedProducts, requiredProducts);
+        storedProducts.forEach(product -> {
+            UUID id = product.getId();
+            product.setQuantity(product.getQuantity() - requiredProducts.get(id));
+        });
+        Booking booking = new Booking();
+        booking.setOrderId(request.orderId());
+        booking.setProducts(requiredProducts);
+        Booking savedBooking = bookingRepository.save(booking);
+        BookedProductsDto bookedProductsDto = productMapper.toDto(requiredProducts, storedProducts);
+        log.debug("Забронировали товары к заказу с ID: {}. Параметры собранного заказа: {}. ID брони: {}",
+                request.orderId(), bookedProductsDto, savedBooking.getId());
+        return bookedProductsDto;
     }
 
     private void checkAllProductsExists(Set<Product> storedProducts, Map<UUID, Long> requiredProducts) {
