@@ -26,6 +26,11 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class DeliveryServiceImpl implements DeliveryService {
     private static final int PRICE_SCALE = 2;
+    private static final BigDecimal BASE_COST = BigDecimal.valueOf(5.0);
+    private static final double FRAGILE_COEFFICIENT = 0.2;
+    private static final double WEIGHT_COEFFICIENT = 0.3;
+    private static final double VOLUME_COEFFICIENT = 0.2;
+    private static final double DESTINATION_COEFFICIENT = 0.2;
 
     private final DeliveryMapper deliveryMapper;
     private final DeliveryRepository deliveryRepository;
@@ -41,7 +46,7 @@ public class DeliveryServiceImpl implements DeliveryService {
         }
         Delivery delivery = deliveryMapper.toDelivery(deliveryDto);
         Delivery savedDelivery = deliveryRepository.save(delivery);
-        log.debug("СОхранили в DB новую доставку. ID доставки: {}. ID заказа: {}",
+        log.debug("Сохранили в DB новую доставку. ID доставки: {}. ID заказа: {}",
                 savedDelivery.getId(), savedDelivery.getOrderId());
         return deliveryMapper.toDeliveryDto(savedDelivery);
     }
@@ -85,8 +90,7 @@ public class DeliveryServiceImpl implements DeliveryService {
         log.debug("Рассчитываем стоимость доставки для заказа с ID: {}", orderDto.orderId());
         Delivery delivery = deliveryRepository.findByOrderId(orderDto.orderId())
                 .orElseThrow(() -> new NoDeliveryFoundException(orderDto.orderId()));
-        final BigDecimal baseDeliveryCost = BigDecimal.valueOf(5.0);
-        BigDecimal totalCost = baseDeliveryCost;
+        BigDecimal totalCost = BASE_COST;
         totalCost = totalCost.add(calculateWarehouseCost(totalCost, delivery.getFromAddress()));
         totalCost = totalCost.add(calculateFragileCost(totalCost, orderDto.fragile()));
         totalCost = totalCost.add(calculateWeightCost(orderDto.deliveryWeight()));
@@ -113,15 +117,15 @@ public class DeliveryServiceImpl implements DeliveryService {
         } else {
             warehouseCost = baseCost.multiply(warehouse2Coefficient).setScale(PRICE_SCALE, RoundingMode.HALF_EVEN);
         }
-        log.debug("Адрес склада: {}. Стоимость доставки c этого склада: {}", warehouseAddress.getCountry(), warehouseCost);
+        log.debug("Адрес склада: {}. Стоимость доставки из этого склада: {}", warehouseAddress.getCountry(), warehouseCost);
         return warehouseCost;
     }
 
     private BigDecimal calculateFragileCost(BigDecimal baseCost, boolean isFragile) {
-        final BigDecimal fragileCoefficient = BigDecimal.valueOf(0.2);
         BigDecimal fragileCost;
         if (isFragile) {
-            fragileCost = baseCost.multiply(fragileCoefficient).setScale(PRICE_SCALE, RoundingMode.HALF_EVEN);
+            fragileCost = baseCost.multiply(BigDecimal.valueOf(FRAGILE_COEFFICIENT))
+                    .setScale(PRICE_SCALE, RoundingMode.HALF_EVEN);
         } else {
             fragileCost = BigDecimal.ZERO;
         }
@@ -130,16 +134,14 @@ public class DeliveryServiceImpl implements DeliveryService {
     }
 
     private BigDecimal calculateWeightCost(double weight) {
-        final BigDecimal weightCoefficient = BigDecimal.valueOf(0.3);
-        BigDecimal weightCost = weightCoefficient.multiply(BigDecimal.valueOf(weight))
+        BigDecimal weightCost = BigDecimal.valueOf(WEIGHT_COEFFICIENT).multiply(BigDecimal.valueOf(weight))
                 .setScale(PRICE_SCALE, RoundingMode.HALF_EVEN);
         log.debug("Вес заказа: {}. Доплата за вес: {}", weight, weightCost);
         return weightCost;
     }
 
     private BigDecimal calculateVolumeCost(double volume) {
-        final BigDecimal volumeCoefficient = BigDecimal.valueOf(0.2);
-        BigDecimal volumeCost = volumeCoefficient.multiply(BigDecimal.valueOf(volume))
+        BigDecimal volumeCost = BigDecimal.valueOf(VOLUME_COEFFICIENT).multiply(BigDecimal.valueOf(volume))
                 .setScale(PRICE_SCALE, RoundingMode.HALF_EVEN);
         log.debug("Объем заказа: {}. Доплата за объем: {}", volume, volumeCost);
         return volumeCost;
@@ -148,12 +150,11 @@ public class DeliveryServiceImpl implements DeliveryService {
     private BigDecimal calculateDestinationCost(BigDecimal baseCost,
                                                 Address warehouseAddress,
                                                 Address destinationAddress) {
-        final BigDecimal destinationCoefficient = BigDecimal.valueOf(0.2);
         BigDecimal destinationCost;
         if (warehouseAddress.getStreet().equals(destinationAddress.getStreet())) {
             destinationCost = BigDecimal.ZERO;
         } else {
-            destinationCost = destinationCoefficient.multiply(baseCost)
+            destinationCost = BigDecimal.valueOf(DESTINATION_COEFFICIENT).multiply(baseCost)
                     .setScale(PRICE_SCALE, RoundingMode.HALF_EVEN);
         }
         log.debug("Улица склада: {}. Улица получателя: {}. Доплата за местоположение пункта назначения: {}",
