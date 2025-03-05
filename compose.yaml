@@ -38,7 +38,7 @@ services:
     image: postgres:15
     container_name: smart-home-db
     ports:
-      - "5433:5432"
+      - "5432:5432"
     volumes:
       - ./init-scripts:/docker-entrypoint-initdb.d
     environment:
