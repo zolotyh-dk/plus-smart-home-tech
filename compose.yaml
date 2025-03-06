@@ -34,19 +34,19 @@ services:
                              --bootstrap-server kafka:29092'"
     init: true
 
-#  smart-home-db:
-#    image: postgres:16.1
-#    container_name: smart-home-db
-#    ports:
-#      - "5433:5432"
-#    volumes:
-#      - ./init-scripts:/docker-entrypoint-initdb.d
-#    environment:
-#      - POSTGRES_USER=postgres
-#      - POSTGRES_PASSWORD=postgres
-#      - POSTGRES_DB=smarthome
-#    healthcheck:
-#      test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
-#      timeout: 5s
-#      interval: 5s
-#      retries: 10
+  smart-home-db:
+    image: postgres:16.1
+    container_name: smart-home-db
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=smarthome
+    healthcheck:
+      test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
+      timeout: 5s
+      interval: 5s
+      retries: 10

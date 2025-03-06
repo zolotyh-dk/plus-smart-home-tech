@@ -11,10 +11,8 @@ CREATE TABLE IF NOT EXISTS payment.payments
     status VARCHAR(7) NOT NULL
 );
 
-INSERT INTO payment.payments (id, total_payment, delivery_price, products_price, fee_price, status)
+INSERT INTO payment.payments (id, order_id, total_payment, delivery_price, products_price, fee_price, status)
 VALUES
-    ('750e8400-e29b-41d4-a716-446655440000', 150.00, 20.00, 130.00, 5.00, 'PENDING'),
-    ('750e8400-e29b-41d4-a716-446655440001', 80.00, 15.00, 65.00, 3.00, 'SUCCESS'),
-    ('750e8400-e29b-41d4-a716-446655440002', 120.00, 10.00, 110.00, 4.50, 'FAILED'),
-    ('750e8400-e29b-41d4-a716-446655440003', 200.00, 25.00, 175.00, 7.50, 'PENDING'),
-    ('750e8400-e29b-41d4-a716-446655440004', 95.00, 12.00, 83.00, 2.75, 'SUCCESS');
+    ('750e8400-e29b-41d4-a716-446655440000', '650e8400-e29b-41d4-a716-446655440000', 150.00, 20.00, 130.00, 5.00, 'PENDING'),
+    ('750e8400-e29b-41d4-a716-446655440001', '650e8400-e29b-41d4-a716-446655440001', 80.00, 15.00, 65.00, 3.00, 'SUCCESS'),
+    ('750e8400-e29b-41d4-a716-446655440002', '650e8400-e29b-41d4-a716-446655440002', 120.00, 10.00, 110.00, 4.50, 'FAILED');
