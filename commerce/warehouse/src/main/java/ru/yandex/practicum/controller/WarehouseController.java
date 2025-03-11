@@ -8,14 +8,15 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.api.WarehouseOperations;
 import ru.yandex.practicum.dto.cart.BookedProductsDto;
 import ru.yandex.practicum.dto.cart.ShoppingCartDto;
-import ru.yandex.practicum.dto.warehouse.AddProductToWarehouseRequest;
-import ru.yandex.practicum.dto.warehouse.AddressDto;
-import ru.yandex.practicum.dto.warehouse.NewProductInWarehouseRequest;
+import ru.yandex.practicum.dto.warehouse.*;
 import ru.yandex.practicum.service.WarehouseService;
+
+import java.util.Map;
+import java.util.UUID;
 
 @Slf4j
 @RestController
-@RequestMapping("api/v1/warehouse")
+@RequestMapping("/api/v1/warehouse")
 @RequiredArgsConstructor
 public class WarehouseController implements WarehouseOperations {
     private final WarehouseService warehouseService;
@@ -49,6 +50,28 @@ public class WarehouseController implements WarehouseOperations {
         log.info("GET /api/v1/warehouse/address - Предоставить адрес склада.");
         AddressDto response = warehouseService.getAddress();
         log.info("Возвращаем адрес: {}", response);
+        return response;
+    }
+
+    @Override
+    public void shipToDelivery(ShippedToDeliveryRequest request) {
+        log.info("POST /api/v1/warehouse/shipped - Передать товары в доставку: {}", request);
+        warehouseService.shipToDelivery(request);
+        log.info("Передали товары в доставку: {}", request);
+    }
+
+    @Override
+    public void returnProductsToWarehouse(Map<UUID, Long> products) {
+        log.info("POST /api/v1/warehouse/return - Принять возврат товаров на склад: {}", products);
+        warehouseService.returnProductsToWarehouse(products);
+        log.info("Приняли товары на склад: {}", products);
+    }
+
+    @Override
+    public BookedProductsDto assemblyProducts(AssemblyProductsForOrderRequest request) {
+        log.info("POST /api/v1/warehouse/assembly - Собрать товары к заказу ID: {}", request.orderId());
+        BookedProductsDto response = warehouseService.assemblyProducts(request);
+        log.info("Собрали товары к доставке: {}", response);
         return response;
     }
 }

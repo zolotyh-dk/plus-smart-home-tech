@@ -4,18 +4,15 @@ spring:
     url: "jdbc:postgresql://localhost:5433/smarthome"
     username: "postgres"
     password: "postgres"
-  #  sql:
-  #    init:
-  #      data-locations: classpath:data.sql
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:
       hibernate:
-        efault_schema: warehouse
+        default_schema: warehouse
 
 logging:
   level:
-    ru.yandex.practicum: debug
+    ru.yandex.practicum: trace
     root: info
     org.hibernate.SQL: debug
     org.hibernate.type.descriptor.sql.BasicBinder: trace

@@ -6,9 +6,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import ru.yandex.practicum.dto.cart.BookedProductsDto;
 import ru.yandex.practicum.dto.cart.ShoppingCartDto;
-import ru.yandex.practicum.dto.warehouse.AddProductToWarehouseRequest;
-import ru.yandex.practicum.dto.warehouse.AddressDto;
-import ru.yandex.practicum.dto.warehouse.NewProductInWarehouseRequest;
+import ru.yandex.practicum.dto.warehouse.*;
+
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * API для обеспечения работы склада онлайн магазина
@@ -47,4 +48,29 @@ public interface WarehouseOperations {
      */
     @GetMapping("/address")
     AddressDto getAddress();
+
+    /**
+     * Передать товары в доставку
+     *
+     * @param request Запрос на передачу в доставку
+     */
+    @PostMapping("/shipped")
+    void shipToDelivery(@RequestBody ShippedToDeliveryRequest request);
+
+    /**
+     * Принять возврат товаров на склад
+     *
+     * @param products Отображение идентификатора товара на отобранное количество
+     */
+    @PostMapping("/return")
+    void returnProductsToWarehouse(@RequestBody Map<UUID, Long> products);
+
+    /**
+     * Собрать товары к заказу для подготовки к отправке
+     *
+     * @param request Запрос на сбор заказа из товаров
+     * @return Общие сведения по бронированию
+     */
+    @PostMapping("/assembly")
+    BookedProductsDto assemblyProducts(@RequestBody @Valid AssemblyProductsForOrderRequest request);
 }
